@@ -14,7 +14,7 @@ export class Character {
         level: number,
         char_class: string,
         xp_mod: number,
-        pc: boolean
+        pc: boolean = true
     ) {
         this.name = name
         this.level = level
@@ -72,13 +72,24 @@ export class NPC extends Character {
         this.share = share
     }
 
+    get_wage = (): number => {
+        return this.wage
+    }
+
+    get_wage_coin = (): Denomination => {
+        return this.wage_coin
+    }
+    get_share = (): string => {
+        return this.share
+    }
+
     to_string = (): string => {
         return `name: ${this.name}; level: ${this.level}; class: ${this.char_class}; xp modifier: ${this.xp_mod}%; NPC; wage: ${this.wage}${this.wage_coin} daily; treasure share: ${this.share}`
     }
 }
 
-let my_character: Character = new Character('jon', 1, 'cleric', 10, true)
-console.log(my_character.to_string())
+// let my_character: Character = new Character('jon', 1, 'cleric', 10, true)
+// console.log(my_character.to_string())
 
-let npc: NPC = new NPC('mikhail', 1, 'fighter', 0, 5, 'gp', '1/2')
-console.log(npc.to_string())
+// let npc: NPC = new NPC('mikhail', 1, 'fighter', 0, 5, 'gp', '1/2')
+// console.log(npc.to_string())

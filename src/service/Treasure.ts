@@ -58,15 +58,15 @@ export class Coin_Treasure extends Treasure {
     }
 }
 
-console.log(new Treasure('gem', 'red ruby', 4, 25, 'gp', 'each').to_string())
-console.log(new Coin_Treasure(1200, 'gp').to_string())
-console.log(
-    new Treasure(
-        'sword',
-        '+1 to attack and damage, pale blue metal, stronger than steel',
-        1,
-        0,
-        'gp',
-        'each'
-    ).to_string()
-)
+// console.log(new Treasure('gem', 'red ruby', 4, 25, 'gp', 'each').to_string())
+// console.log(new Coin_Treasure(1200, 'gp').to_string())
+// console.log(
+//     new Treasure(
+//         'sword',
+//         '+1 to attack and damage, pale blue metal, stronger than steel',
+//         1,
+//         0,
+//         'gp',
+//         'each'
+//     ).to_string()
+// )
