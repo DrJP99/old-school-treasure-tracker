@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Old-School Treasure Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A treasure tracker for Old-School Roleplaying Games. Designed for [Old School Essentials](https://necroticgnome.com/products/old-school-essentials-rules-tome) by Gavin Norman.
+
+Add your Player Characters, Retainers, Treasure and quickly calculate how big is each person's share of Treasure and XP once they return to town.
 
 ## Available Scripts
 
