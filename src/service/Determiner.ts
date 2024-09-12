@@ -1,4 +1,4 @@
 export enum Determiner {
-	each = 'each',
-	total = 'total'
+    each = 'each',
+    total = 'total',
 }
