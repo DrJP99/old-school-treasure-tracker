@@ -1,13 +1,13 @@
 import { Char_Class } from './Char_Class'
 import { Denomination } from './Denomination'
-import { get_tpx_by_class_level } from './TPX'
+import { get_tpx_by_class_level } from './TXP'
 
 export class Character {
-    name: string = ''
-    level: number = 0
-    char_class: Char_Class = Char_Class.normal_human
-    xp_mod: number = 0
-    pc: boolean = false
+    private name: string = ''
+    private level: number = 0
+    private char_class: Char_Class = Char_Class.normal_human
+    private xp_mod: number = 0
+    private pc: boolean = false
 
     constructor(
         name: string,
@@ -53,9 +53,9 @@ export class Character {
 }
 
 export class NPC extends Character {
-    wage: number
-    wage_coin: Denomination
-    share: string
+    private wage: number
+    private wage_coin: Denomination
+    private share: string
 
     constructor(
         name: string,
@@ -84,7 +84,7 @@ export class NPC extends Character {
     }
 
     to_string = (): string => {
-        return `name: ${this.name}; level: ${this.level}; class: ${this.char_class}; xp modifier: ${this.xp_mod}%; NPC; wage: ${this.wage}${this.wage_coin} daily; treasure share: ${this.share}`
+        return `name: ${this.get_name()}; level: ${this.get_level()}; class: ${this.get_char_class()}; xp modifier: ${this.get_xp_mod()}%; NPC; wage: ${this.get_wage()}${this.get_wage_coin()} daily; treasure share: ${this.get_share()}`
     }
 }
 

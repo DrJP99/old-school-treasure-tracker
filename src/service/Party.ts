@@ -8,18 +8,24 @@ let share_to_num = (share: string, common: number) => {
 }
 
 export class Party {
-    characters: Array<Character>
-    treasure: Array<Treasure>
-    party_txp: number
-    pc_share: number
-    num_shares: number
+    private characters: Array<Character>
+    private treasure: Array<Treasure>
+    private party_txp: number
+    private pc_share: number
+    private num_shares: number
 
-    constructor() {
-        this.characters = []
-        this.treasure = []
-        this.party_txp = 0
-        this.pc_share = 12
-        this.num_shares = 0
+    constructor(
+        characters: Array<Character> = [],
+        treasure: Array<Treasure> = [],
+        party_txp: number = 0,
+        pc_share: number = 12,
+        num_shares: number = 0
+    ) {
+        this.characters = characters
+        this.treasure = treasure
+        this.party_txp = party_txp
+        this.pc_share = pc_share
+        this.num_shares = num_shares
     }
 
     add_character(character: Character | NPC) {
@@ -82,6 +88,26 @@ export class Party {
         for (let character of this.characters) {
             console.log(`- ${character.get_name()}`)
         }
+    }
+
+    public get_characters = (): Character[] => {
+        return this.characters
+    }
+
+    public get_treasure = (): Treasure[] => {
+        return this.treasure
+    }
+
+    public get_party_txp = (): number => {
+        return this.party_txp
+    }
+
+    public get_pc_share = (): number => {
+        return this.pc_share
+    }
+
+    public get_num_shares = (): number => {
+        return this.num_shares
     }
 }
 

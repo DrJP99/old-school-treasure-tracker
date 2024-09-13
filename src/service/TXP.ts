@@ -6,6 +6,8 @@ export let get_tpx_by_class_level = (
 ): number => {
     let result: number = 0
 
+    // const class_cube: number[][] = [[0, 1_500, 1_500, 3_000, 12_000, 13_000, 25_000, 50_000, 100_000, 100_000,], []]
+    console.log('level: ' + level + level.valueOf)
     if (char_class === Char_Class.cleric) {
         switch (level) {
             case 1:
@@ -47,6 +49,9 @@ export let get_tpx_by_class_level = (
             case 13:
                 result = 100_000
                 break
+            default:
+                console.log('defaulting')
+                result = 1
         }
     } else if (char_class === Char_Class.dwarf) {
         switch (level) {
