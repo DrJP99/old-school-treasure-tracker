@@ -1,4 +1,5 @@
 import { Character, NPC } from './Character'
+import { Monster } from './Monster'
 import { Treasure } from './Treasure'
 
 let share_to_num = (share: string, common: number) => {
@@ -10,6 +11,7 @@ let share_to_num = (share: string, common: number) => {
 export class Party {
     private characters: Array<Character>
     private treasure: Array<Treasure>
+    private monsters: Array<Monster>
     private party_txp: number
     private pc_share: number
     private num_shares: number
@@ -17,12 +19,14 @@ export class Party {
     constructor(
         characters: Array<Character> = [],
         treasure: Array<Treasure> = [],
+        monsters: Array<Monster> = [],
         party_txp: number = 0,
         pc_share: number = 12,
         num_shares: number = 0
     ) {
         this.characters = characters
         this.treasure = treasure
+        this.monsters = monsters
         this.party_txp = party_txp
         this.pc_share = pc_share
         this.num_shares = num_shares
@@ -90,12 +94,55 @@ export class Party {
         }
     }
 
+    public get_treasure_xp = (): number => {
+        let xp: number = 0
+
+        // sum the total xp recovered from treasure
+        for (let t of this.treasure) {
+            xp += t.get_xp()
+        }
+
+        return xp
+    }
+
+    public get_monster_xp = (): number => {
+        let xp: number = 0
+
+        // sum the total xp from defeating monsters
+        for (let m of this.monsters) {
+            xp += m.get_total_xp()
+        }
+
+        return xp
+    }
+
+    public get_total_xp = (): number => {
+        let xp: number = 0
+
+        xp += this.get_monster_xp()
+        xp += this.get_treasure_xp()
+
+        return xp
+    }
+
+    public get_xp_per_share = (): number => {
+        return this.get_total_xp() / this.num_shares
+    }
+
+    public get_xp_per_pc_share = (): number => {
+        return this.get_xp_per_share() * this.pc_share
+    }
+
     public get_characters = (): Character[] => {
         return this.characters
     }
 
     public get_treasure = (): Treasure[] => {
         return this.treasure
+    }
+
+    public get_monsters = (): Monster[] => {
+        return this.monsters
     }
 
     public get_party_txp = (): number => {
