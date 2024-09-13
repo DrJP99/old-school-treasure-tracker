@@ -28,6 +28,38 @@ export class Treasure {
     to_string = (): string => {
         return `${this.qty > 1 ? `${this.qty}x ` : ''}${this.name}${this.description.length > 0 ? `(${this.description})` : ''}${this.worth > 0 ? `, (worth ${this.worth}${this.worth_coin} ${this.worth_determiner})` : ''}`
     }
+
+    public get_xp = (): number => {
+        let xp: number = 0
+        let total_worth: number = 0
+
+        // calculate total worth (in case of eaches)
+        if (this.worth_determiner === Determiner.total) {
+            total_worth = this.worth
+        } else if (this.worth_determiner === Determiner.each) {
+            total_worth = this.worth * this.qty
+        }
+
+        // convert from different denominations to gp
+        switch (this.worth_coin) {
+            case Denomination.pp:
+                xp = total_worth * 5
+                break
+            case Denomination.gp:
+                xp = total_worth
+                break
+            case Denomination.ep:
+                xp = total_worth / 2
+                break
+            case Denomination.sp:
+                xp = total_worth / 10
+                break
+            case Denomination.cp:
+                xp = total_worth / 100
+        }
+
+        return xp
+    }
 }
 
 export class Coin_Treasure extends Treasure {
