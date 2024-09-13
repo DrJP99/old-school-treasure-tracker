@@ -2,12 +2,60 @@ import { Denomination } from './Denomination'
 import { Determiner } from './Determiner'
 
 export class Treasure {
-    name: string
-    description: string
-    qty: number
-    worth: number
-    worth_coin: Denomination
-    worth_determiner: Determiner
+    private name: string
+    private description: string
+    private qty: number
+    private worth: number
+    private worth_coin: Denomination
+    private worth_determiner: Determiner
+
+    public getName(): string {
+        return this.name
+    }
+
+    public setName(name: string): void {
+        this.name = name
+    }
+
+    public getDescription(): string {
+        return this.description
+    }
+
+    public setDescription(description: string): void {
+        this.description = description
+    }
+
+    public getQty(): number {
+        return this.qty
+    }
+
+    public setQty(qty: number): void {
+        this.qty = qty
+    }
+
+    public getWorth(): number {
+        return this.worth
+    }
+
+    public setWorth(worth: number): void {
+        this.worth = worth
+    }
+
+    public getWorth_coin(): Denomination {
+        return this.worth_coin
+    }
+
+    public setWorth_coin(worth_coin: Denomination): void {
+        this.worth_coin = worth_coin
+    }
+
+    public getWorth_determiner(): Determiner {
+        return this.worth_determiner
+    }
+
+    public setWorth_determiner(worth_determiner: Determiner): void {
+        this.worth_determiner = worth_determiner
+    }
 
     constructor(
         name: string,
@@ -86,7 +134,7 @@ export class Coin_Treasure extends Treasure {
     }
 
     to_string = (): string => {
-        return `${this.qty} ${this.name}`
+        return `${this.getQty()} ${this.getName()}`
     }
 }
 

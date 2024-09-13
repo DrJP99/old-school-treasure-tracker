@@ -39,6 +39,10 @@ export class Character {
         return this.xp_mod
     }
 
+    get_xp_mod_percentage = (): number => {
+        return this.xp_mod / 100 + 1
+    }
+
     get_pc = (): boolean => {
         return this.pc
     }
