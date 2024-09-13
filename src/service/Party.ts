@@ -7,8 +7,10 @@ export class Party {
     private treasure: Array<Treasure>
     private monsters: Array<Monster>
     private party_txp: number
-    private pc_share: number
-    private num_shares: number
+    private pc_share: number // shares of treasure
+    private num_shares: number // number of treasure shares
+    private xp_pc_share: number // shares of XP per PC
+    private xp_num_shares: number // number of XP shares
 
     constructor(
         characters: Array<Character> = [],
@@ -16,7 +18,9 @@ export class Party {
         monsters: Array<Monster> = [],
         party_txp: number = 0,
         pc_share: number = 12,
-        num_shares: number = 0
+        num_shares: number = 0,
+        xp_pc_share: number = 2,
+        xp_num_shares: number = 0
     ) {
         this.characters = characters
         this.treasure = treasure
@@ -24,6 +28,8 @@ export class Party {
         this.party_txp = party_txp
         this.pc_share = pc_share
         this.num_shares = num_shares
+        this.xp_pc_share = xp_pc_share
+        this.xp_num_shares = xp_num_shares
     }
 
     add_character = (character: Character | NPC) => {
@@ -32,13 +38,16 @@ export class Party {
             // if character is PC, add tpx to party's total
             this.party_txp += character.get_txp()
             this.num_shares += this.pc_share
+            this.xp_num_shares += this.xp_pc_share
         } else if (!character.get_pc() && character instanceof NPC) {
             // if character is NPC, don't add tpx, add fractional share
             this.num_shares += this.share_to_num(
                 character.get_share(),
                 this.pc_share
             )
+            this.xp_num_shares += this.xp_pc_share / 2
         }
+        console.log(`Total number of XP shares: ${this.xp_num_shares}`)
     }
 
     addTreasure = (treasure: Treasure) => {
@@ -55,43 +64,65 @@ export class Party {
         return (numerator / denominator) * common
     }
 
-    remove_character_by_name = (name: string) => {
-        this.characters = this.characters.filter((char) => {
-            if (char.get_name() === name) {
-                if (char.get_pc()) {
-                    // if PC, remove number of pc shares
-                    this.num_shares -= 12
-                    this.party_txp -= char.get_txp()
-                } else if (!char.get_pc() && char instanceof NPC) {
-                    // if NPC, calculate number of share
-                    this.num_shares -= this.share_to_num(
-                        char.get_share(),
-                        this.pc_share
-                    )
-                }
-            }
-            // return only characters who are not the one we want to remove
-            return char.get_name() !== name
-        })
-    }
+    // remove_character_by_name = (name: string) => {
+    //     this.characters = this.characters.filter((char) => {
+    //         if (char.get_name() === name) {
+    //             if (char.get_pc()) {
+    //                 // if PC, remove number of pc shares
+    //                 this.num_shares -= 12
+    //                 this.party_txp -= char.get_txp()
+    //             } else if (!char.get_pc() && char instanceof NPC) {
+    //                 // if NPC, calculate number of share
+    //                 this.num_shares -= this.share_to_num(
+    //                     char.get_share(),
+    //                     this.pc_share
+    //                 )
+    //             }
+    //         }
+    //         // return only characters who are not the one we want to remove
+    //         return char.get_name() !== name
+    //     })
+    // }
 
-    remove_character_by_index = (index: number) => {
+    // remove_character_by_index = (index: number) => {
+    //     this.characters = this.characters.filter((char, i) => {
+    //         if (i === index) {
+    //             if (char.get_pc()) {
+    //                 // if PC, remove number of pc shares
+    //                 this.num_shares -= 12
+    //                 this.party_txp -= char.get_txp()
+    //             } else if (!char.get_pc() && char instanceof NPC) {
+    //                 // if NPC, calculate number of share
+    //                 this.num_shares -= this.share_to_num(
+    //                     char.get_share(),
+    //                     this.pc_share
+    //                 )
+    //             }
+    //         }
+    //         // return indices that are not the one we want to remove
+    //         return i !== index
+    //     })
+    // }
+
+    remove_character_by_uuid = (uuid: string) => {
         this.characters = this.characters.filter((char, i) => {
-            if (i === index) {
-                if (char.get_pc()) {
-                    // if PC, remove number of pc shares
-                    this.num_shares -= 12
-                    this.party_txp -= char.get_txp()
-                } else if (!char.get_pc() && char instanceof NPC) {
-                    // if NPC, calculate number of share
+            if (char.get_uuid() === uuid) {
+                if (char instanceof NPC) {
+                    // if NPC
                     this.num_shares -= this.share_to_num(
                         char.get_share(),
                         this.pc_share
                     )
+                    this.xp_num_shares -= this.xp_pc_share / 2
+                } else {
+                    // if PC
+                    this.party_txp -= char.get_txp()
+                    this.num_shares -= this.pc_share
+                    this.xp_num_shares -= this.xp_pc_share
                 }
             }
-            // return indices that are not the one we want to remove
-            return i !== index
+            // Return characters who do not have the indicated uuid
+            return char.get_uuid() !== uuid
         })
     }
 
@@ -134,15 +165,18 @@ export class Party {
     }
 
     public get_xp_per_share = (): number => {
-        return this.num_shares !== 0 ? this.get_total_xp() / this.num_shares : 0
+        console.log('XP per share:' + this.get_total_xp() / this.xp_num_shares)
+        return this.xp_num_shares !== 0
+            ? this.get_total_xp() / this.xp_num_shares
+            : 0
     }
 
     public get_xp_per_pc_share = (): number => {
-        return this.get_xp_per_share() * this.pc_share
+        return this.get_xp_per_share() * this.xp_pc_share
     }
 
     public get_xp_per_npc_share = (): number => {
-        return this.get_xp_per_share() * (this.pc_share / 2)
+        return this.get_xp_per_share() * (this.xp_pc_share / 2)
     }
 
     public get_characters = (): Character[] => {
@@ -167,6 +201,22 @@ export class Party {
 
     public get_num_shares = (): number => {
         return this.num_shares
+    }
+
+    public getXp_pc_share(): number {
+        return this.xp_pc_share
+    }
+
+    public setXp_pc_share(xp_pc_share: number): void {
+        this.xp_pc_share = xp_pc_share
+    }
+
+    public getXp_num_shares(): number {
+        return this.xp_num_shares
+    }
+
+    public setXp_num_shares(xp_num_shares: number): void {
+        this.xp_num_shares = xp_num_shares
     }
 }
 

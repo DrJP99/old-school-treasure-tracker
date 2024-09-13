@@ -1,9 +1,11 @@
+import { v4 as uuidv4 } from 'uuid'
 import { Char_Class } from './Char_Class'
 import { Denomination } from './Denomination'
 import { get_tpx_by_class_level } from './TXP'
 
 export class Character {
     private name: string = ''
+    private uuid: string
     private level: number = 0
     private char_class: Char_Class = Char_Class.normal_human
     private xp_mod: number = 0
@@ -17,6 +19,7 @@ export class Character {
         pc: boolean = true
     ) {
         this.name = name
+        this.uuid = uuidv4()
         this.level = level
         this.char_class = char_class as Char_Class
         this.xp_mod = xp_mod
@@ -25,6 +28,10 @@ export class Character {
 
     get_name = (): string => {
         return this.name
+    }
+
+    get_uuid = (): string => {
+        return this.uuid
     }
 
     get_level = (): number => {

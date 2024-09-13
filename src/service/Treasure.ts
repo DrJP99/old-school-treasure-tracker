@@ -1,13 +1,32 @@
 import { Denomination } from './Denomination'
 import { Determiner } from './Determiner'
+import { v4 as uuidv4 } from 'uuid'
 
 export class Treasure {
     private name: string
+    private uuid: string
     private description: string
     private qty: number
     private worth: number
     private worth_coin: Denomination
     private worth_determiner: Determiner
+
+    constructor(
+        name: string,
+        description: string,
+        qty: number,
+        worth: number,
+        worth_coin: string,
+        worth_determiner: string
+    ) {
+        this.name = name
+        this.uuid = uuidv4()
+        this.description = description
+        this.qty = qty
+        this.worth = worth
+        this.worth_coin = worth_coin as Denomination
+        this.worth_determiner = worth_determiner as Determiner
+    }
 
     public getName(): string {
         return this.name
@@ -55,22 +74,6 @@ export class Treasure {
 
     public setWorth_determiner(worth_determiner: Determiner): void {
         this.worth_determiner = worth_determiner
-    }
-
-    constructor(
-        name: string,
-        description: string,
-        qty: number,
-        worth: number,
-        worth_coin: string,
-        worth_determiner: string
-    ) {
-        this.name = name
-        this.description = description
-        this.qty = qty
-        this.worth = worth
-        this.worth_coin = worth_coin as Denomination
-        this.worth_determiner = worth_determiner as Determiner
     }
 
     to_string = (): string => {
