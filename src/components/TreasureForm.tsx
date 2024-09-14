@@ -7,6 +7,7 @@ import { capitalize } from '../service/Capitalize'
 
 interface TreasureFormProps {
     returnTreasure: (treasure: Treasure) => void
+    closeForm: () => void
 }
 
 enum CoinTreasure {
@@ -14,7 +15,7 @@ enum CoinTreasure {
     coins = 'coins',
 }
 
-const TreasureForm = ({ returnTreasure }: TreasureFormProps) => {
+const TreasureForm = ({ returnTreasure, closeForm }: TreasureFormProps) => {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [qty, setQty] = useState(1)
@@ -26,6 +27,15 @@ const TreasureForm = ({ returnTreasure }: TreasureFormProps) => {
     const [worthDeterminer, setWorthDeterminer] = useState<Determiner>(
         Determiner.each
     )
+
+    let resetFields = () => {
+        setName('')
+        setDescription('')
+        setQty(1)
+        setWorth(0)
+        setWorthCoin(Denomination.gp)
+        setWorthDeterminer(Determiner.each)
+    }
 
     let addTreasure = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
@@ -44,103 +54,141 @@ const TreasureForm = ({ returnTreasure }: TreasureFormProps) => {
             treasure = new Coin_Treasure(qty, worthCoin)
         }
 
+        resetFields()
         returnTreasure(treasure)
     }
 
+    let close = () => {
+        resetFields()
+        closeForm()
+    }
+
     return (
-        <form onSubmit={addTreasure}>
-            <select
-                value={coinTreasure}
-                onChange={(e) =>
-                    setCoinTreasure(e.target.value as CoinTreasure)
-                }
-            >
-                {getEnumKeys(CoinTreasure).map((key, index) => (
-                    <option key={index} value={CoinTreasure[key]}>
-                        {capitalize(key)}
-                    </option>
-                ))}
-            </select>
-            {coinTreasure === CoinTreasure.treasure ? (
-                <>
-                    <input
-                        name="name"
-                        type="text"
-                        placeholder="Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                    <input
-                        name="description"
-                        type="text"
-                        placeholder="Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                    <input
-                        name="qty"
-                        type="number"
-                        placeholder="Quantity"
-                        value={qty}
-                        onChange={(e) => setQty(Number(e.target.value))}
-                    />
-                    <input
-                        name="worth"
-                        type="number"
-                        placeholder="Worth"
-                        value={worth}
-                        onChange={(e) => setWorth(Number(e.target.value))}
-                    />
-                    <select
-                        value={worthCoin}
-                        onChange={(e) =>
-                            setWorthCoin(e.target.value as Denomination)
-                        }
+        <div className="form">
+            <form onSubmit={addTreasure} className="form-group">
+                <h3>Treasure</h3>
+                <select
+                    value={coinTreasure}
+                    onChange={(e) => {
+                        resetFields()
+                        setCoinTreasure(e.target.value as CoinTreasure)
+                    }}
+                >
+                    {getEnumKeys(CoinTreasure).map((key, index) => (
+                        <option key={index} value={CoinTreasure[key]}>
+                            {capitalize(key)}
+                        </option>
+                    ))}
+                </select>
+                {coinTreasure === CoinTreasure.treasure ? (
+                    <>
+                        <label htmlFor="treasure-name">Name</label>
+                        <input
+                            name="name"
+                            id="treasure-name"
+                            type="text"
+                            placeholder="Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <label htmlFor="treasure-description">
+                            Description
+                        </label>
+                        <input
+                            name="description"
+                            id="treasure-description"
+                            type="text"
+                            placeholder="Description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                        <label htmlFor="treasure-qty">Quantity</label>
+                        <input
+                            name="qty"
+                            id="treasure-qty"
+                            type="number"
+                            placeholder="Quantity"
+                            value={qty}
+                            onChange={(e) => setQty(Number(e.target.value))}
+                        />
+                        <label htmlFor="treasure-worth">Worth</label>
+                        <input
+                            name="worth"
+                            id="treasure-worth"
+                            type="number"
+                            placeholder="Worth"
+                            value={worth}
+                            onChange={(e) => setWorth(Number(e.target.value))}
+                        />
+                        <label htmlFor="treasure-coin">Coin</label>
+                        <select
+                            value={worthCoin}
+                            id="treasure-coin"
+                            onChange={(e) =>
+                                setWorthCoin(e.target.value as Denomination)
+                            }
+                        >
+                            {getEnumKeys(Denomination).map((key, index) => (
+                                <option key={index} value={Denomination[key]}>
+                                    {key}
+                                </option>
+                            ))}
+                        </select>
+                        <label htmlFor="treasure-determiner">Determiner</label>
+                        <select
+                            value={worthDeterminer}
+                            id="treasure-determiner"
+                            onChange={(e) =>
+                                setWorthDeterminer(e.target.value as Determiner)
+                            }
+                        >
+                            {getEnumKeys(Determiner).map((key, index) => (
+                                <option key={index} value={Determiner[key]}>
+                                    {key}
+                                </option>
+                            ))}
+                        </select>
+                    </>
+                ) : (
+                    <>
+                        <label htmlFor="treasure-qty"></label>
+                        <input
+                            name="qty"
+                            id="treasure-qty"
+                            type="number"
+                            placeholder="Quantity"
+                            value={qty}
+                            onChange={(e) => setQty(Number(e.target.value))}
+                        />
+                        <label htmlFor="treasure-coin">Coin</label>
+                        <select
+                            value={worthCoin}
+                            id="treasure-coin"
+                            onChange={(e) =>
+                                setWorthCoin(e.target.value as Denomination)
+                            }
+                        >
+                            {getEnumKeys(Denomination).map((key, index) => (
+                                <option key={index} value={Denomination[key]}>
+                                    {key}
+                                </option>
+                            ))}
+                        </select>
+                    </>
+                )}
+                <div className="form-footer">
+                    <button className="btn btn-danger" onClick={close}>
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        className="btn btn-accept float-right"
                     >
-                        {getEnumKeys(Denomination).map((key, index) => (
-                            <option key={index} value={Denomination[key]}>
-                                {key}
-                            </option>
-                        ))}
-                    </select>
-                    <select
-                        value={worthDeterminer}
-                        onChange={(e) =>
-                            setWorthDeterminer(e.target.value as Determiner)
-                        }
-                    >
-                        {getEnumKeys(Determiner).map((key, index) => (
-                            <option key={index} value={Determiner[key]}>
-                                {key}
-                            </option>
-                        ))}
-                    </select>
-                </>
-            ) : (
-                <>
-                    <input
-                        name="qty"
-                        type="number"
-                        placeholder="Quantity"
-                        value={qty}
-                        onChange={(e) => setQty(Number(e.target.value))}
-                    />
-                    <select
-                        value={worthCoin}
-                        onChange={(e) =>
-                            setWorthCoin(e.target.value as Denomination)
-                        }
-                    >
-                        {getEnumKeys(Denomination).map((key, index) => (
-                            <option key={index} value={Denomination[key]}>
-                                {key}
-                            </option>
-                        ))}
-                    </select>
-                </>
-            )}
-            <button type="submit">submit</button>
-        </form>
+                        submit
+                    </button>
+                </div>
+            </form>
+        </div>
     )
 }
 
