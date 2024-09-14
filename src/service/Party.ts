@@ -1,4 +1,5 @@
 import { Character, NPC } from './Character'
+import { Feat } from './Feat'
 import { Monster } from './Monster'
 import { Treasure } from './Treasure'
 
@@ -6,6 +7,7 @@ export class Party {
     private characters: Array<Character>
     private treasure: Array<Treasure>
     private monsters: Array<Monster>
+    private feats: Array<Feat>
     private party_txp: number
     private pc_share: number // shares of treasure
     private num_shares: number // number of treasure shares
@@ -16,6 +18,7 @@ export class Party {
         characters: Array<Character> = [],
         treasure: Array<Treasure> = [],
         monsters: Array<Monster> = [],
+        feats: Array<Feat> = [],
         party_txp: number = 0,
         pc_share: number = 12,
         num_shares: number = 0,
@@ -25,6 +28,7 @@ export class Party {
         this.characters = characters
         this.treasure = treasure
         this.monsters = monsters
+        this.feats = feats
         this.party_txp = party_txp
         this.pc_share = pc_share
         this.num_shares = num_shares
@@ -56,6 +60,10 @@ export class Party {
 
     addMonster = (monster: Monster) => {
         this.monsters = this.monsters.concat(monster)
+    }
+
+    addFeat = (feat: Feat) => {
+        this.feats = this.feats.concat(feat)
     }
 
     public share_to_num = (share: string, common: number) => {
@@ -155,11 +163,22 @@ export class Party {
         return xp
     }
 
+    public get_feat_xp = (): number => {
+        let xp: number = 0
+
+        for (let f of this.feats) {
+            xp += f.getXP(this.party_txp)
+        }
+
+        return xp
+    }
+
     public get_total_xp = (): number => {
         let xp: number = 0
 
         xp += this.get_monster_xp()
         xp += this.get_treasure_xp()
+        xp += this.get_feat_xp()
 
         return xp
     }
@@ -191,6 +210,10 @@ export class Party {
         return this.monsters
     }
 
+    public get_feats = (): Feat[] => {
+        return this.feats
+    }
+
     public get_party_txp = (): number => {
         return this.party_txp
     }
@@ -217,6 +240,30 @@ export class Party {
 
     public setXp_num_shares(xp_num_shares: number): void {
         this.xp_num_shares = xp_num_shares
+    }
+
+    public getNumNPC = (): number => {
+        let num = 0
+
+        for (let c of this.characters) {
+            if (c instanceof NPC) {
+                num++
+            }
+        }
+
+        return num
+    }
+
+    public getNumPC = (): number => {
+        let num = 0
+
+        for (let c of this.characters) {
+            if (!(c instanceof NPC)) {
+                num++
+            }
+        }
+
+        return num
     }
 }
 
