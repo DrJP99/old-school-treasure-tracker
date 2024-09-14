@@ -25,17 +25,21 @@ const Char = ({ character, party }: CharProps) => {
                         {character.get_char_class()} {character.get_level()}
                     </p>
                 </div>
-                {character instanceof NPC ? (
-                    <p className="note-creator">
-                        Daily wage: {character.get_wage()}
-                        {character.get_wage_coin()}. Treasure share:{' '}
-                        {character.get_share()}
-                    </p>
-                ) : (
-                    <></>
-                )}
+                <p className="note-creator">
+                    XP Bonus: {character.get_xp_mod() >= 0 ? '+' : '-'}
+                    {character.get_xp_mod()}%{'. '}
+                    {character instanceof NPC ? (
+                        <>
+                            Daily wage: {character.get_wage()}
+                            {character.get_wage_coin()}. Treasure share:{' '}
+                            {character.get_share()}
+                        </>
+                    ) : (
+                        <></>
+                    )}
+                </p>
             </div>
-            <p className="note-body">
+            <p>
                 Share of XP:{' '}
                 {Math.round(
                     (character instanceof NPC

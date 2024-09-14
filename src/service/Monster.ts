@@ -19,6 +19,10 @@ export class Monster {
         return this.name
     }
 
+    public getUuid = (): string => {
+        return this.uuid
+    }
+
     public get_description = (): string => {
         return this.description
     }

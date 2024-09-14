@@ -36,6 +36,10 @@ export class Treasure {
         this.name = name
     }
 
+    public getUuid = (): string => {
+        return this.uuid
+    }
+
     public getDescription(): string {
         return this.description
     }

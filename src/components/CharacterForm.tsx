@@ -110,7 +110,7 @@ const CharacterForm = ({ returnCharacter, closeForm }: CharacterFormProps) => {
                 />
                 {pc === PC.npc ? (
                     <>
-                        <label htmlFor="character-wage"></label>
+                        <label htmlFor="character-wage">Daily Wage</label>
                         <input
                             name="wage"
                             id="character-wage"
