@@ -35,7 +35,7 @@ const MonsterForm = ({ returnMonster, closeForm }: MonsterFormProps) => {
     return (
         <div className="form">
             <form onSubmit={addMonster} className="form-group">
-                <h3>Treasure</h3>
+                <h3>Monster</h3>
                 <label htmlFor="monster-name">Name</label>
                 <input
                     name="name"
