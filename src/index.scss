@@ -1,0 +1,458 @@
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+
+$bg: #FAF9F6;
+$light-black: #605F5E;
+$red: #FB3640;
+// $light-red: #fb4934;
+$green: #dbe8d4;
+// $light-green: #b8bb26;
+$yellow: #d79921;
+// $light-yellow: #fabd2f;
+$blue: #0A2463;
+// $light-blue: #83a598;
+$purple: #247BA0;
+// $light-purple: #d3869b;
+$aqua: #E2E2E2;
+// $light-aqua: #8ec07c;
+$gray: #605F5E;
+$fg: #080402;
+
+$bg0_h: #1d2021;
+$bg0: #282828;
+$bg1: #3c3836;
+$bg2: #504945;
+$bg3: #665c54;
+$bg4: #7c6f64;
+
+$side-padding: 25%;
+$top-padding: 10px;
+
+$radius: 10px;
+
+* {
+
+	&::selection {
+		background: $red;
+		color: $fg;
+	}
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Lora", serif;
+	font-weight: 500;
+	
+	background-color: $bg;
+	color: $fg;
+}
+
+.main {
+	padding: $top-padding $side-padding;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+		monospace;
+}
+
+.note-card {
+	border-style: solid;
+	border-radius: $radius;
+	border-width: 3px;
+	border-color: $gray;
+
+	padding: 16px 24px;
+	margin: 10px;
+
+	.card-header {
+		margin-bottom: 16px;
+		border-bottom: $gray;
+		border-bottom-style: solid;
+		border-bottom-width: 2px;
+
+		
+		&-top {
+			display: flex;
+			// padding-top: 6px;
+
+			.card-title {
+				margin: 0;
+			}
+	
+			.date {
+				display: inline;
+				margin: 0;
+				margin-left: auto;
+				color: $light-black;
+				// font-weight: bold;
+				
+				&::after {
+					content: " /";
+					font-weight: bold;
+					color: $fg;
+				}
+
+				&::before {
+					content: "/ ";
+					font-weight: bold;
+					color: $fg;
+				}
+			}
+		}
+
+
+
+	}
+
+	// .card-body {
+	// 	// float: left;
+	// }
+}
+
+.tags {
+	padding: 0 0 12px 0;
+
+	.tag {
+		font-size: small;
+		font-weight: bold;
+		margin: 0 8px 0 0;
+		padding: 5px;
+		border-radius: 100px;
+
+		&::before {
+			content: "#";
+		}
+
+		&-undefined {
+			display: none;
+		}
+
+		&-archived {
+			background-color: $bg1;
+			color: $gray;
+		}
+
+		&-red {
+			background-color: $red;
+			color: $fg;
+		}
+
+		&-green {
+			background-color: $green;
+		}
+
+		&-purple {
+			background-color: $purple;
+		}
+
+		&-blue {
+			background-color: $blue;
+		}
+
+		&-yellow {
+			background-color: $yellow;
+		}
+	}
+
+	&-selector {
+		padding: 16px 8px;
+		border-radius: $radius;
+
+		.tag {
+			&:hover {
+				cursor: pointer;
+			}
+		}
+
+		&-selected {
+			background-color: $bg1;
+
+			&::before {
+				content: "Selected tags: \a\a";
+				white-space: pre;
+			}
+		}
+
+		&-avail {
+			background-color: $bg0_h;
+
+			&::before {
+				content: "Other available tags: \a\a";
+				white-space: pre;
+			}
+		}
+	}
+}
+
+.note-creator {
+	color: $green;
+	font-weight: bold;
+	margin: 8px 0 16px 0;
+
+	&::before {
+		font-weight: bold;
+		color: $fg;
+		content: "> ";
+	}
+}
+
+.form {
+	display: flex;
+	border: 3px solid $gray;
+	border-radius: $radius;
+	margin: auto;
+
+	.form-group {
+		padding: 20px;
+		flex: 1;
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+			font-size: 1.25em;
+		}
+
+		input {
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: $radius;
+			border: 3px solid $gray;
+			background-color: $bg;
+			color: $fg;
+		}
+
+		textarea {
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: $radius;
+			border: 3px solid $gray;
+			background-color: $bg;
+			color: $fg;
+			resize: none;
+		}
+
+		.form-footer {
+			margin-top: 16px;
+		}
+	}
+}
+
+.btn {
+	padding: 10px 40px;
+	border-radius: $radius;
+	border: none;
+	font-weight: bold;
+	cursor: pointer;
+	color: $fg;
+
+	&-accept {
+		background-color: $green;
+
+		&:hover {
+			// background-color: $light-blue;
+		}
+	}
+
+	&-good {
+		background-color: $green;
+
+		&:hover {
+			// background-color: $light-green;
+		}
+	}
+
+	&-danger {
+		background-color: $red;
+
+		&:hover {
+			// background-color: $light-red;
+		}
+	}
+
+	&-warning {
+		background-color: $yellow;
+
+		&:hover {
+			// background-color: $light-yellow;
+		}
+	}
+
+	&-gray {
+		background-color: $light-black;
+
+		&:hover {
+				background-color: $gray;
+			}
+	}
+
+	&-goback {
+		padding: 6px;
+		font-size: small;
+		margin: 12px 0;
+
+		&::before {
+			content: "<- ";
+		}
+	}
+}
+
+.float {
+	&-right {
+		float: right;
+		margin-left: auto;
+	}
+
+	&-left {
+		float: left;
+		margin-right: auto;
+	}
+}
+
+.navbar {
+	margin-top: 0;
+	background-color: $blue;
+	color: $fg;
+	padding: 0 $side-padding;
+
+	ul {
+		list-style-type: none;
+		padding: 0;
+		display: flex;
+
+		li {
+			margin: 10px;
+			padding: 10px;
+		}
+
+		a {
+			text-decoration: none;
+			color: inherit;
+		}
+
+		.navbar-item {
+			border: none;
+			background-color: inherit;
+			color: inherit;
+			font-weight: bold;
+
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+
+			width: auto;
+			white-space: nowrap;
+
+			&:hover {
+				cursor: pointer;
+				background-color: $fg;
+				color: $blue;
+			}
+		}
+	}
+}
+
+a {
+	color: $purple;
+	text-decoration: none;
+
+	&:hover {
+		background: $purple;
+		color: $bg;
+	}
+}
+
+
+h1 {
+	font-family: "Pirata One", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
+	// color: $red;
+	font-size: 5em;
+	font-weight: normal;
+}
+
+h2 {
+	// color: $yellow
+	font-family: "Yanone Kaffeesatz", sans-serif;
+	font-size: xx-large;
+	background-color: $green;
+	padding: 5px;
+}
+
+h3 {
+	// color: $purple
+	font-family: "Yanone Kaffeesatz", sans-serif;
+	font-size: x-large;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+p {
+	margin-top: 5px;
+}
+
+.note {
+	border-radius: $radius;
+	border-color: $gray;
+	border-style: solid;
+	padding: 32px;
+
+	&-header {
+		margin-bottom: 32px;
+		border-bottom: $gray;
+		border-bottom-width: 2px;
+		border-bottom-style: solid;
+	}
+
+	&-body {
+		padding: 16px;
+		background-color: $bg0_h;
+		border-radius: $radius;
+	}
+
+	&-date {
+		color: $light-black;
+	}
+
+	&-buttons {
+		margin-top: 16px;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	h2 {
+		margin: 0;
+		font-size: x-large;
+	}
+
+
+}
+
+.filter-select {
+	margin-bottom: 16px;
+	background-color: $bg0_h;
+	padding: 16px 16px;
+	border-radius: $radius;
+
+	&::before {
+		content: "Filters: \a\a";
+		white-space: pre;
+		font-size: large;
+		font-weight: bold;
+	}
+
+	span {
+		margin-right: 16px;
+	}
+}
