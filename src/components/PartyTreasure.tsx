@@ -31,8 +31,13 @@ const PartyTreasure = ({ treasure }: PartyTreasureProps) => {
                         {treasure.getWorth() > 0 ? (
                             <>
                                 (worth {treasure.getWorth()}
-                                {treasure.getWorth_coin()}{' '}
-                                {treasure.getWorth_determiner()})
+                                {treasure.getWorth_coin()}
+                                {treasure.getQty() > 1 ? (
+                                    <> {treasure.getWorth_determiner()}</>
+                                ) : (
+                                    ''
+                                )}
+                                )
                             </>
                         ) : (
                             ''
