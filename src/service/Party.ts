@@ -51,7 +51,6 @@ export class Party {
             )
             this.xp_num_shares += this.xp_pc_share / 2
         }
-        console.log(`Total number of XP shares: ${this.xp_num_shares}`)
     }
 
     addTreasure = (treasure: Treasure) => {
@@ -178,23 +177,28 @@ export class Party {
 
         xp += this.get_monster_xp()
         xp += this.get_treasure_xp()
-        xp += this.get_feat_xp()
+        // feat xp is excluded, as NPCs don't receive xp from feats of exploration
+        // xp += this.get_feat_xp()
 
         return xp
     }
 
     public get_xp_per_share = (): number => {
-        console.log('XP per share:' + this.get_total_xp() / this.xp_num_shares)
         return this.xp_num_shares !== 0
             ? this.get_total_xp() / this.xp_num_shares
             : 0
     }
 
     public get_xp_per_pc_share = (): number => {
-        return this.get_xp_per_share() * this.xp_pc_share
+        // Include Feat xp PC's share
+        return (
+            this.get_xp_per_share() * this.xp_pc_share +
+            this.get_feat_xp() / this.getNumPC()
+        )
     }
 
     public get_xp_per_npc_share = (): number => {
+        // NPCs don't receive xp from feats of exploration
         return this.get_xp_per_share() * (this.xp_pc_share / 2)
     }
 
