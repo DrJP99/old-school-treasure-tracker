@@ -40,7 +40,7 @@ const Char = ({ character, party }: CharProps) => {
                 </p>
             </div>
             <p>
-                Share of XP:{' '}
+                <b>Share of XP:</b>{' '}
                 {Math.round(
                     (character instanceof NPC
                         ? party.get_xp_per_npc_share()
@@ -48,6 +48,11 @@ const Char = ({ character, party }: CharProps) => {
                         character.get_xp_mod_percentage()
                 ).toFixed(0)}
             </p>
+            {!(character instanceof NPC) ? (
+                <p>
+                    <b>TXP:</b> {character.get_txp()}
+                </p>
+            ) : null}
             <div className="note-buttons">
                 <button className="btn btn-accept">Edit</button>
                 <button className="btn btn-danger">Delete</button>

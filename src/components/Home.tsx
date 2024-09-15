@@ -186,7 +186,9 @@ const Home = () => {
 
             {party.get_characters().length > 0 ? (
                 <>
-                    <h2>Total XP: {party.get_total_xp()}</h2>
+                    <h2>
+                        Total XP: {party.get_total_xp() + party.get_feat_xp()}
+                    </h2>
                     {party.getNumPC() > 0 ? (
                         <>
                             <p>
@@ -241,7 +243,11 @@ const Home = () => {
                 <div>
                     <h2>Feats of Exploration ({party.get_feat_xp()} XP)</h2>
                     {party.get_feats().map((f) => (
-                        <PartyFeat feat={f} key={f.getUuid()} />
+                        <PartyFeat
+                            feat={f}
+                            txp={party.get_party_txp()}
+                            key={f.getUuid()}
+                        />
                     ))}
                 </div>
             ) : null}
