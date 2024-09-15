@@ -4,9 +4,16 @@ import { Party } from '../service/Party'
 interface CharProps {
     character: Character | NPC
     party: Party
+    removeCharacter: (uuid: string) => void
+    editCharacter: (uuid: string) => void
 }
 
-const Char = ({ character, party }: CharProps) => {
+const Char = ({
+    character,
+    party,
+    removeCharacter,
+    editCharacter,
+}: CharProps) => {
     return (
         <div className="note-card" key={character.get_name()}>
             <div className="card-header">
@@ -54,8 +61,18 @@ const Char = ({ character, party }: CharProps) => {
                 </p>
             ) : null}
             <div className="note-buttons">
-                <button className="btn btn-accept">Edit</button>
-                <button className="btn btn-danger">Delete</button>
+                <button
+                    className="btn btn-accept"
+                    onClick={(e) => editCharacter(character.get_uuid())}
+                >
+                    Edit
+                </button>
+                <button
+                    className="btn btn-danger"
+                    onClick={(e) => removeCharacter(character.get_uuid())}
+                >
+                    Delete
+                </button>
             </div>
         </div>
     )

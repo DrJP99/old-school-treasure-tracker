@@ -19,7 +19,6 @@ export class Party {
         treasure: Array<Treasure> = [],
         monsters: Array<Monster> = [],
         feats: Array<Feat> = [],
-        party_txp: number = 0,
         pc_share: number = 12,
         num_shares: number = 0,
         xp_pc_share: number = 2,
@@ -29,7 +28,7 @@ export class Party {
         this.treasure = treasure
         this.monsters = monsters
         this.feats = feats
-        this.party_txp = party_txp
+        this.party_txp = this.calculatePartyTXP()
         this.pc_share = pc_share
         this.num_shares = num_shares
         this.xp_pc_share = xp_pc_share
@@ -258,6 +257,31 @@ export class Party {
         return num
     }
 
+    public calculatePartyTXP = (): number => {
+        let total = 0
+
+        for (let c of this.characters) {
+            if (!(c instanceof NPC)) {
+                total += c.get_txp()
+            }
+        }
+
+        return total
+    }
+
+    public calculateShares = (): number => {
+        let total = 0
+
+        for (let c of this.characters) {
+            total +=
+                c instanceof NPC
+                    ? this.share_to_num(c.get_share(), this.pc_share)
+                    : this.pc_share
+        }
+
+        return total
+    }
+
     public getNumPC = (): number => {
         let num = 0
 
@@ -268,6 +292,27 @@ export class Party {
         }
 
         return num
+    }
+
+    public removeMonster = (uuid: string): void => {
+        this.monsters = this.monsters.filter((m) => m.getUuid() !== uuid)
+    }
+
+    public removeTreasure = (uuid: string): void => {
+        this.treasure = this.treasure.filter((m) => m.getUuid() !== uuid)
+    }
+
+    public removeFeat = (uuid: string): void => {
+        this.feats = this.feats.filter((m) => m.getUuid() !== uuid)
+    }
+
+    public editCharacter = (character: Character) => {
+        this.characters = this.characters.map((c) =>
+            c.get_uuid() === character.get_uuid() ? character : c
+        )
+
+        this.num_shares = this.calculateShares()
+        this.party_txp = this.calculatePartyTXP()
     }
 }
 

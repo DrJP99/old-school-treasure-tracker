@@ -3,9 +3,10 @@ import { Feat } from '../service/Feat'
 interface PartyFeatProps {
     feat: Feat
     txp: number
+    removeFeat: (uuid: string) => void
 }
 
-const PartyFeat = ({ feat, txp }: PartyFeatProps) => {
+const PartyFeat = ({ feat, txp, removeFeat }: PartyFeatProps) => {
     return (
         <div>
             <h3>
@@ -16,6 +17,12 @@ const PartyFeat = ({ feat, txp }: PartyFeatProps) => {
                     <>{feat.getDescription()} - </>
                 ) : null}
                 {feat.getXP(txp)} XP
+            </p>
+            <p>
+                <button onClick={(e) => console.log('Edit')}>Edit</button>|{' '}
+                <button onClick={(e) => removeFeat(feat.getUuid())}>
+                    Remove
+                </button>
             </p>
         </div>
     )

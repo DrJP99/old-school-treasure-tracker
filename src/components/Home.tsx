@@ -1,6 +1,6 @@
 import { Party } from '../service/Party'
-import { Character } from '../service/Character'
-import { Treasure } from '../service/Treasure'
+import { Character, NPC } from '../service/Character'
+import { Coin_Treasure, Treasure } from '../service/Treasure'
 import { Monster } from '../service/Monster'
 import Char from './Char'
 import PartyTreasure from './PartyTreasure'
@@ -23,88 +23,58 @@ const Home = () => {
     const [featFormVisible, setFeatFormVisible] = useState(false)
     const [buttonsVisible, setButtonsVisible] = useState(true)
 
-    // useEffect(() => {
-    //     let temp_party: Party = new Party(
-    //         party.get_characters(),
-    //         party.get_treasure(),
-    //         party.get_monsters(),
-    //         party.get_feats(),
-    //         party.get_party_txp(),
-    //         party.get_pc_share(),
-    //         party.get_num_shares(),
-    //         party.getXp_pc_share(),
-    //         party.getXp_num_shares()
-    //     )
+    const [formCharacter, setFormCharacter] = useState<
+        Character | NPC | undefined
+    >(undefined)
 
-    //     temp_party.addFeat(
-    //         new Feat('Exploration', FeatLevel.minor, 'Found 5 rooms in dungeon')
-    //     )
-    //     setParty(temp_party)
-    // }, [])
+    useEffect(() => {
+        populate()
+    }, [])
 
-    let addCharacter = (char: Character) => {
-        let temp_party: Party = new Party(
+    let cloneParty = (): Party => {
+        return new Party(
             party.get_characters(),
             party.get_treasure(),
             party.get_monsters(),
             party.get_feats(),
-            party.get_party_txp(),
             party.get_pc_share(),
             party.get_num_shares(),
             party.getXp_pc_share(),
             party.getXp_num_shares()
         )
+    }
+
+    let addCharacter = (char: Character) => {
+        let temp_party = cloneParty()
         temp_party.add_character(char)
+        setParty(temp_party)
+        setFormCharacter(undefined)
+        showCharacterForm()
+    }
+
+    let editCharacter = (character: Character) => {
+        let temp_party = cloneParty()
+        temp_party.editCharacter(character)
         setParty(temp_party)
         showCharacterForm()
     }
 
     let addTreasure = (treasure: Treasure) => {
-        let temp_party: Party = new Party(
-            party.get_characters(),
-            party.get_treasure(),
-            party.get_monsters(),
-            party.get_feats(),
-            party.get_party_txp(),
-            party.get_pc_share(),
-            party.get_num_shares(),
-            party.getXp_pc_share(),
-            party.getXp_num_shares()
-        )
+        let temp_party = cloneParty()
         temp_party.addTreasure(treasure)
         setParty(temp_party)
         showTreasureForm()
     }
 
     let addMonster = (monster: Monster) => {
-        let temp_party: Party = new Party(
-            party.get_characters(),
-            party.get_treasure(),
-            party.get_monsters(),
-            party.get_feats(),
-            party.get_party_txp(),
-            party.get_pc_share(),
-            party.get_num_shares(),
-            party.getXp_pc_share(),
-            party.getXp_num_shares()
-        )
+        let temp_party = cloneParty()
         temp_party.addMonster(monster)
         setParty(temp_party)
         showMonsterForm()
     }
 
     let addFeat = (feat: Feat) => {
-        let temp_party: Party = new Party(
-            party.get_characters(),
-            party.get_treasure(),
-            party.get_monsters(),
-            party.get_feats(),
-            party.get_party_txp(),
-            party.get_pc_share(),
-            party.get_num_shares(),
-            party.getXp_pc_share(),
-            party.getXp_num_shares()
-        )
+        let temp_party = cloneParty()
         temp_party.addFeat(feat)
         setParty(temp_party)
         showFeatForm()
@@ -113,6 +83,9 @@ const Home = () => {
     let showCharacterForm = () => {
         setButtonsVisible(!buttonsVisible)
         setCharacterFormVisible(!characterFormVisible)
+        if (characterFormVisible) {
+            setFormCharacter(undefined)
+        }
     }
 
     let showTreasureForm = () => {
@@ -128,6 +101,77 @@ const Home = () => {
     let showFeatForm = () => {
         setButtonsVisible(!buttonsVisible)
         setFeatFormVisible(!featFormVisible)
+    }
+
+    let removeMonster = (uuid: string) => {
+        let temp_party = cloneParty()
+        temp_party.removeMonster(uuid)
+        setParty(temp_party)
+    }
+
+    let removeTreasure = (uuid: string) => {
+        let temp_party = cloneParty()
+        temp_party.removeTreasure(uuid)
+        setParty(temp_party)
+    }
+
+    let removeCharacter = (uuid: string) => {
+        let temp_party = cloneParty()
+        temp_party.remove_character_by_uuid(uuid)
+        setParty(temp_party)
+    }
+
+    let removeFeat = (uuid: string) => {
+        let temp_party = cloneParty()
+        temp_party.removeFeat(uuid)
+        setParty(temp_party)
+    }
+
+    let populate = () => {
+        let temp_party = new Party(
+            [
+                new Character('Vin', 5, 'thief', 0),
+                new Character('Bombur', 1, 'dwarf', 0),
+                new Character('Quackdalf', 3, 'Magic-User', 0),
+                new Character('Adolin', 6, 'fighter', 0),
+            ],
+            [
+                new Coin_Treasure(6000, 'sp'),
+                new Coin_Treasure(300, 'gp'),
+                new Treasure('Emerald Necklace', '', 1, 1500, 'gp', 'each'),
+                new Treasure('Silver Brooch', '', 1, 750, 'gp', 'each'),
+            ],
+            [
+                new Monster('Carcass Crawlers', '', 75, 3),
+                new Monster('Giant Centipedes', '', 6, 5),
+                new Monster('Minotaurs', '', 275, 2),
+                new Monster('Hydra', '5HD', 175, 1),
+            ],
+            [
+                new Feat(
+                    'Trap',
+                    'minor',
+                    'Dwarf detects a boulder trap and gets everyone out just in time'
+                ),
+                new Feat(
+                    'Lore',
+                    'minor',
+                    "Magic-User recalls conversation with a sage about minotaur's ability to smell their prey. Party deliberately stays upwind of the minotaur, allowing for a surprise ambush"
+                ),
+                new Feat(
+                    'Skills',
+                    'minor',
+                    'Thief twirls his lockpicks in a dextrous manner across and between his knuckles on order to delight a small child kept prisoner in the dungeon'
+                ),
+                new Feat(
+                    'Quest',
+                    'major',
+                    'The party returns the small child to their parents back in town.'
+                ),
+            ]
+        )
+
+        setParty(temp_party)
     }
 
     return (
@@ -164,7 +208,9 @@ const Home = () => {
             {characterFormVisible ? (
                 <CharacterForm
                     returnCharacter={addCharacter}
+                    returnEditCharacter={editCharacter}
                     closeForm={showCharacterForm}
+                    character={formCharacter}
                 />
             ) : null}
             {treasureFormVisible ? (
@@ -219,7 +265,16 @@ const Home = () => {
                 <div>
                     <h2>Characters:</h2>
                     {party.get_characters().map((c) => (
-                        <Char character={c} party={party} key={c.get_uuid()} />
+                        <Char
+                            character={c}
+                            party={party}
+                            removeCharacter={removeCharacter}
+                            editCharacter={(e) => {
+                                setFormCharacter(c)
+                                showCharacterForm()
+                            }}
+                            key={c.get_uuid()}
+                        />
                     ))}
                 </div>
             ) : null}
@@ -227,7 +282,11 @@ const Home = () => {
                 <div>
                     <h2>Treasure found: ({party.get_treasure_xp()} XP)</h2>
                     {party.get_treasure().map((t) => (
-                        <PartyTreasure treasure={t} key={t.getUuid()} />
+                        <PartyTreasure
+                            treasure={t}
+                            removeTreasure={removeTreasure}
+                            key={t.getUuid()}
+                        />
                     ))}
                 </div>
             ) : null}
@@ -235,7 +294,11 @@ const Home = () => {
                 <div>
                     <h2>Monsters defeated: ({party.get_monster_xp()} XP)</h2>
                     {party.get_monsters().map((m) => (
-                        <MonsterDefeated monster={m} key={m.getUuid()} />
+                        <MonsterDefeated
+                            monster={m}
+                            removeMonster={removeMonster}
+                            key={m.getUuid()}
+                        />
                     ))}
                 </div>
             ) : null}
@@ -246,6 +309,7 @@ const Home = () => {
                         <PartyFeat
                             feat={f}
                             txp={party.get_party_txp()}
+                            removeFeat={removeFeat}
                             key={f.getUuid()}
                         />
                     ))}

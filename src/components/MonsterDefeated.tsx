@@ -2,9 +2,10 @@ import { Monster } from '../service/Monster'
 
 interface MonsterDefeatedProps {
     monster: Monster
+    removeMonster: (uuid: string) => void
 }
 
-const MonsterDefeated = ({ monster }: MonsterDefeatedProps) => {
+const MonsterDefeated = ({ monster, removeMonster }: MonsterDefeatedProps) => {
     return (
         <div>
             <h3>
@@ -22,6 +23,12 @@ const MonsterDefeated = ({ monster }: MonsterDefeatedProps) => {
                 ) : (
                     ''
                 )}
+            </p>
+            <p>
+                <button onClick={(e) => console.log('Edit')}>Edit</button>|{' '}
+                <button onClick={(e) => removeMonster(monster.getUuid())}>
+                    Remove
+                </button>
             </p>
         </div>
     )

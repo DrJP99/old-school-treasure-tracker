@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { Char_Class } from '../service/Char_Class'
 import { PC } from '../service/PC'
 import { Denomination } from '../service/Denomination'
@@ -8,10 +8,17 @@ import { Character, NPC } from '../service/Character'
 
 interface CharacterFormProps {
     returnCharacter: (char: Character) => void
+    returnEditCharacter: (char: Character) => void
     closeForm: () => void
+    character: Character | NPC | undefined
 }
 
-const CharacterForm = ({ returnCharacter, closeForm }: CharacterFormProps) => {
+const CharacterForm = ({
+    returnCharacter,
+    returnEditCharacter,
+    closeForm,
+    character = undefined,
+}: CharacterFormProps) => {
     const [name, setName] = useState<string>('')
     const [level, setLevel] = useState<number>(1)
     const [charClass, setCharClass] = useState<Char_Class>(Char_Class.cleric)
@@ -21,6 +28,23 @@ const CharacterForm = ({ returnCharacter, closeForm }: CharacterFormProps) => {
     const [wage, setWage] = useState<number>(1)
     const [wageCoin, setWageCoin] = useState<Denomination>(Denomination.gp)
     const [share, setShare] = useState<string>('1/2')
+
+    useEffect(() => {
+        if (character) {
+            setName(character.get_name())
+            setLevel(character.get_level())
+            setCharClass(character.get_char_class())
+            setXpMod(character.get_xp_mod())
+            if (character instanceof NPC) {
+                setPc(PC.npc)
+                setWage(character.get_wage())
+                setWageCoin(character.get_wage_coin())
+                setShare(character.get_share())
+            } else {
+                setPc(PC.pc)
+            }
+        }
+    }, [])
 
     let resetFields = () => {
         setName('')
@@ -46,14 +70,48 @@ const CharacterForm = ({ returnCharacter, closeForm }: CharacterFormProps) => {
         returnCharacter(char)
     }
 
+    let editCharacter = (e: FormEvent<HTMLFormElement>): void => {
+        e.preventDefault()
+
+        var char: Character
+        if (pc === PC.pc) {
+            char = new Character(
+                name,
+                level,
+                charClass,
+                xpMod,
+                true,
+                character?.get_uuid()
+            )
+        } else {
+            char = new NPC(
+                name,
+                level,
+                charClass,
+                xpMod,
+                wage,
+                wageCoin,
+                share,
+                character?.get_uuid()
+            )
+        }
+        resetFields()
+        returnEditCharacter(char)
+    }
+
     let close = () => {
         resetFields()
         closeForm()
     }
 
+    // console.log(character)
+
     return (
         <div className="form">
-            <form onSubmit={(e) => addCharacter(e)} className="form-group">
+            <form
+                onSubmit={character ? editCharacter : addCharacter}
+                className="form-group"
+            >
                 <h3>Character</h3>
                 <label htmlFor="character-pc"></label>
                 <select

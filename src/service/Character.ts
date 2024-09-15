@@ -16,10 +16,11 @@ export class Character {
         level: number,
         char_class: string,
         xp_mod: number,
-        pc: boolean = true
+        pc: boolean = true,
+        uuid = uuidv4()
     ) {
         this.name = name
-        this.uuid = uuidv4()
+        this.uuid = uuid
         this.level = level
         this.char_class = char_class as Char_Class
         this.xp_mod = xp_mod
@@ -75,9 +76,10 @@ export class NPC extends Character {
         xp_mod: number,
         wage: number,
         wage_coin: string,
-        share: string
+        share: string,
+        uuid = uuidv4()
     ) {
-        super(name, level, char_class, xp_mod, false)
+        super(name, level, char_class, xp_mod, false, uuid)
         this.wage = wage
         this.wage_coin = wage_coin as Denomination
         this.share = share
