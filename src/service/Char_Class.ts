@@ -4,7 +4,7 @@ export enum Char_Class {
     elf = 'elf',
     fighter = 'fighter',
     halfling = 'halfling',
-    magic_user = 'magic-user',
+    magic_user = 'Magic-User',
     thief = 'thief',
     normal_human = 'normal human',
 }
