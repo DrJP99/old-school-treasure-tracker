@@ -27,7 +27,7 @@ const FeatForm = ({
             setFeatLevel(feat.getFeatLevel())
             setDescription(feat.getDescription())
         }
-    }, [])
+    }, [feat])
 
     let resetFields = () => {
         setName('')

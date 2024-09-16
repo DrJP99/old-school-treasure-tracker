@@ -26,7 +26,7 @@ const MonsterForm = ({
             setXp(monster.get_xp())
             setQty(monster.get_qty())
         }
-    }, [])
+    }, [monster])
 
     let resetFields = () => {
         setName('')

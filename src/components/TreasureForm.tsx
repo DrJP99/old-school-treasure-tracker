@@ -49,7 +49,7 @@ const TreasureForm = ({
                 setCoinTreasure(CoinTreasure.coins)
             }
         }
-    }, [])
+    }, [treasure])
 
     let resetFields = () => {
         setName('')
