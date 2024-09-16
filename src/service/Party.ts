@@ -30,9 +30,9 @@ export class Party {
         this.feats = feats
         this.party_txp = this.calculatePartyTXP()
         this.pc_share = pc_share
-        this.num_shares = num_shares
+        this.num_shares = this.calculateShares()
         this.xp_pc_share = xp_pc_share
-        this.xp_num_shares = xp_num_shares
+        this.xp_num_shares = this.calculateXPShares()
     }
 
     add_character = (character: Character | NPC) => {
@@ -69,46 +69,6 @@ export class Party {
         let denominator = Number(share[2])
         return (numerator / denominator) * common
     }
-
-    // remove_character_by_name = (name: string) => {
-    //     this.characters = this.characters.filter((char) => {
-    //         if (char.get_name() === name) {
-    //             if (char.get_pc()) {
-    //                 // if PC, remove number of pc shares
-    //                 this.num_shares -= 12
-    //                 this.party_txp -= char.get_txp()
-    //             } else if (!char.get_pc() && char instanceof NPC) {
-    //                 // if NPC, calculate number of share
-    //                 this.num_shares -= this.share_to_num(
-    //                     char.get_share(),
-    //                     this.pc_share
-    //                 )
-    //             }
-    //         }
-    //         // return only characters who are not the one we want to remove
-    //         return char.get_name() !== name
-    //     })
-    // }
-
-    // remove_character_by_index = (index: number) => {
-    //     this.characters = this.characters.filter((char, i) => {
-    //         if (i === index) {
-    //             if (char.get_pc()) {
-    //                 // if PC, remove number of pc shares
-    //                 this.num_shares -= 12
-    //                 this.party_txp -= char.get_txp()
-    //             } else if (!char.get_pc() && char instanceof NPC) {
-    //                 // if NPC, calculate number of share
-    //                 this.num_shares -= this.share_to_num(
-    //                     char.get_share(),
-    //                     this.pc_share
-    //                 )
-    //             }
-    //         }
-    //         // return indices that are not the one we want to remove
-    //         return i !== index
-    //     })
-    // }
 
     remove_character_by_uuid = (uuid: string) => {
         this.characters = this.characters.filter((char, i) => {
@@ -277,6 +237,16 @@ export class Party {
                 c instanceof NPC
                     ? this.share_to_num(c.get_share(), this.pc_share)
                     : this.pc_share
+        }
+
+        return total
+    }
+
+    public calculateXPShares = (): number => {
+        let total = 0
+
+        for (let c of this.characters) {
+            total += c instanceof NPC ? this.xp_pc_share : this.xp_pc_share / 2
         }
 
         return total
