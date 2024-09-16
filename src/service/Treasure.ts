@@ -17,10 +17,11 @@ export class Treasure {
         qty: number,
         worth: number,
         worth_coin: string,
-        worth_determiner: string
+        worth_determiner: string,
+        uuid: string = uuidv4()
     ) {
         this.name = name
-        this.uuid = uuidv4()
+        this.uuid = uuid
         this.description = description
         this.qty = qty
         this.worth = worth
@@ -118,7 +119,7 @@ export class Treasure {
 }
 
 export class Coin_Treasure extends Treasure {
-    constructor(qty: number, worth_coin: string) {
+    constructor(qty: number, worth_coin: string, uuid: string = uuidv4()) {
         let name = 'Gold'
         switch (worth_coin) {
             case 'pp':
@@ -137,7 +138,7 @@ export class Coin_Treasure extends Treasure {
                 name = 'Copper'
                 break
         }
-        super(`${name} coins`, '', qty, qty, worth_coin, 'total')
+        super(`${name} coins`, '', qty, qty, worth_coin, 'total', uuid)
     }
 
     to_string = (): string => {

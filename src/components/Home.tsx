@@ -26,6 +26,13 @@ const Home = () => {
     const [formCharacter, setFormCharacter] = useState<
         Character | NPC | undefined
     >(undefined)
+    const [formTreasure, setFormTreasure] = useState<
+        Treasure | Coin_Treasure | undefined
+    >(undefined)
+    const [formMonster, setFormMonster] = useState<Monster | undefined>(
+        undefined
+    )
+    const [formFeat, setFormFeat] = useState<Feat | undefined>(undefined)
 
     useEffect(() => {
         populate()
@@ -66,6 +73,13 @@ const Home = () => {
         showTreasureForm()
     }
 
+    let editTreasure = (treasure: Treasure) => {
+        let temp_party = cloneParty()
+        temp_party.editTreasure(treasure)
+        setParty(temp_party)
+        showTreasureForm()
+    }
+
     let addMonster = (monster: Monster) => {
         let temp_party = cloneParty()
         temp_party.addMonster(monster)
@@ -73,9 +87,23 @@ const Home = () => {
         showMonsterForm()
     }
 
+    let editMonster = (monster: Monster) => {
+        let temp_party = cloneParty()
+        temp_party.editMonster(monster)
+        setParty(temp_party)
+        showMonsterForm()
+    }
+
     let addFeat = (feat: Feat) => {
         let temp_party = cloneParty()
         temp_party.addFeat(feat)
+        setParty(temp_party)
+        showFeatForm()
+    }
+
+    let editFeat = (feat: Feat) => {
+        let temp_party = cloneParty()
+        temp_party.editFeat(feat)
         setParty(temp_party)
         showFeatForm()
     }
@@ -216,18 +244,27 @@ const Home = () => {
             {treasureFormVisible ? (
                 <TreasureForm
                     returnTreasure={addTreasure}
+                    returnEditTreasure={editTreasure}
                     closeForm={showTreasureForm}
+                    treasure={formTreasure}
                 />
             ) : null}
             {monsterFormVisible ? (
                 <MonsterForm
                     returnMonster={addMonster}
+                    returnEditMonster={editMonster}
                     closeForm={showMonsterForm}
+                    monster={formMonster}
                 />
             ) : null}
 
             {featFormVisible ? (
-                <FeatForm returnFeat={addFeat} closeForm={showFeatForm} />
+                <FeatForm
+                    returnFeat={addFeat}
+                    returnEditFeat={editFeat}
+                    closeForm={showFeatForm}
+                    feat={formFeat}
+                />
             ) : null}
 
             {party.get_characters().length > 0 ? (
@@ -285,6 +322,10 @@ const Home = () => {
                         <PartyTreasure
                             treasure={t}
                             removeTreasure={removeTreasure}
+                            editTreasure={(e) => {
+                                setFormTreasure(t)
+                                showTreasureForm()
+                            }}
                             key={t.getUuid()}
                         />
                     ))}
@@ -297,6 +338,10 @@ const Home = () => {
                         <MonsterDefeated
                             monster={m}
                             removeMonster={removeMonster}
+                            editMonster={(e) => {
+                                setFormMonster(m)
+                                showMonsterForm()
+                            }}
                             key={m.getUuid()}
                         />
                     ))}
@@ -310,6 +355,10 @@ const Home = () => {
                             feat={f}
                             txp={party.get_party_txp()}
                             removeFeat={removeFeat}
+                            editFeat={(e) => {
+                                setFormFeat(f)
+                                showFeatForm()
+                            }}
                             key={f.getUuid()}
                         />
                     ))}

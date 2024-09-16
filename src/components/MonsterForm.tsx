@@ -1,16 +1,32 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { Monster } from '../service/Monster'
 
 interface MonsterFormProps {
     returnMonster: (monster: Monster) => void
+    returnEditMonster: (monster: Monster) => void
     closeForm: () => void
+    monster: Monster | undefined
 }
 
-const MonsterForm = ({ returnMonster, closeForm }: MonsterFormProps) => {
+const MonsterForm = ({
+    returnMonster,
+    returnEditMonster,
+    closeForm,
+    monster = undefined,
+}: MonsterFormProps) => {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [xp, setXp] = useState(0)
     const [qty, setQty] = useState(1)
+
+    useEffect(() => {
+        if (monster) {
+            setName(monster.get_name())
+            setDescription(monster.get_description())
+            setXp(monster.get_xp())
+            setQty(monster.get_qty())
+        }
+    }, [])
 
     let resetFields = () => {
         setName('')
@@ -27,6 +43,21 @@ const MonsterForm = ({ returnMonster, closeForm }: MonsterFormProps) => {
         returnMonster(monster)
     }
 
+    let editMonster = (e: FormEvent<HTMLFormElement>): void => {
+        e.preventDefault()
+
+        const newMonster = new Monster(
+            name,
+            description,
+            xp,
+            qty,
+            monster?.getUuid()
+        )
+
+        resetFields()
+        returnEditMonster(newMonster)
+    }
+
     let close = () => {
         resetFields()
         closeForm()
@@ -34,7 +65,10 @@ const MonsterForm = ({ returnMonster, closeForm }: MonsterFormProps) => {
 
     return (
         <div className="form">
-            <form onSubmit={addMonster} className="form-group">
+            <form
+                onSubmit={monster ? editMonster : addMonster}
+                className="form-group"
+            >
                 <h3>Monster</h3>
                 <label htmlFor="monster-name">Name</label>
                 <input

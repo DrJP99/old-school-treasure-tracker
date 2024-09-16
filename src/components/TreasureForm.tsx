@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { Coin_Treasure, Treasure } from '../service/Treasure'
 import { Determiner } from '../service/Determiner'
 import { Denomination } from '../service/Denomination'
@@ -7,7 +7,9 @@ import { capitalize } from '../service/Capitalize'
 
 interface TreasureFormProps {
     returnTreasure: (treasure: Treasure) => void
+    returnEditTreasure: (treasure: Treasure) => void
     closeForm: () => void
+    treasure: Treasure | Coin_Treasure | undefined
 }
 
 enum CoinTreasure {
@@ -15,7 +17,12 @@ enum CoinTreasure {
     coins = 'coins',
 }
 
-const TreasureForm = ({ returnTreasure, closeForm }: TreasureFormProps) => {
+const TreasureForm = ({
+    returnTreasure,
+    returnEditTreasure,
+    closeForm,
+    treasure = undefined,
+}: TreasureFormProps) => {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [qty, setQty] = useState(1)
@@ -27,6 +34,22 @@ const TreasureForm = ({ returnTreasure, closeForm }: TreasureFormProps) => {
     const [worthDeterminer, setWorthDeterminer] = useState<Determiner>(
         Determiner.each
     )
+
+    useEffect(() => {
+        if (treasure) {
+            setQty(treasure.getQty())
+            setWorthCoin(treasure.getWorth_coin())
+            if (!(treasure instanceof Coin_Treasure)) {
+                setCoinTreasure(CoinTreasure.treasure)
+                setName(treasure.getName())
+                setDescription(treasure.getDescription())
+                setWorth(treasure.getWorth())
+                setWorthDeterminer(treasure.getWorth_determiner())
+            } else {
+                setCoinTreasure(CoinTreasure.coins)
+            }
+        }
+    }, [])
 
     let resetFields = () => {
         setName('')
@@ -58,6 +81,28 @@ const TreasureForm = ({ returnTreasure, closeForm }: TreasureFormProps) => {
         returnTreasure(treasure)
     }
 
+    let editTreasure = (e: FormEvent<HTMLFormElement>): void => {
+        e.preventDefault()
+
+        var newTreasure: Treasure
+        if (coinTreasure === CoinTreasure.treasure) {
+            newTreasure = new Treasure(
+                name,
+                description,
+                qty,
+                worth,
+                worthCoin,
+                worthDeterminer,
+                treasure?.getUuid()
+            )
+        } else {
+            newTreasure = new Coin_Treasure(qty, worthCoin, treasure?.getUuid())
+        }
+
+        resetFields()
+        returnEditTreasure(newTreasure)
+    }
+
     let close = () => {
         resetFields()
         closeForm()
@@ -65,7 +110,10 @@ const TreasureForm = ({ returnTreasure, closeForm }: TreasureFormProps) => {
 
     return (
         <div className="form">
-            <form onSubmit={addTreasure} className="form-group">
+            <form
+                onSubmit={treasure ? editTreasure : addTreasure}
+                className="form-group"
+            >
                 <h3>Treasure</h3>
                 <select
                     value={coinTreasure}

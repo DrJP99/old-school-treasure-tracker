@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { Feat } from '../service/Feat'
 import { FeatLevel } from '../service/FeatLevel'
 import { getEnumKeys } from '../service/EnumKeys'
@@ -6,13 +6,28 @@ import { capitalize } from '../service/Capitalize'
 
 interface FeatFormProps {
     returnFeat: (feat: Feat) => void
+    returnEditFeat: (feat: Feat) => void
     closeForm: () => void
+    feat: Feat | undefined
 }
 
-const FeatForm = ({ returnFeat, closeForm }: FeatFormProps) => {
+const FeatForm = ({
+    returnFeat,
+    returnEditFeat,
+    closeForm,
+    feat = undefined,
+}: FeatFormProps) => {
     const [name, setName] = useState<string>('')
     const [featLevel, setFeatLevel] = useState<FeatLevel>(FeatLevel.minor)
     const [description, setDescription] = useState<string>('')
+
+    useEffect(() => {
+        if (feat) {
+            setName(feat.getName())
+            setFeatLevel(feat.getFeatLevel())
+            setDescription(feat.getDescription())
+        }
+    }, [])
 
     let resetFields = () => {
         setName('')
@@ -23,9 +38,17 @@ const FeatForm = ({ returnFeat, closeForm }: FeatFormProps) => {
     let addFeat = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
 
-        let feat = new Feat(name, featLevel, description)
+        let newFeat = new Feat(name, featLevel, description)
         resetFields()
-        returnFeat(feat)
+        returnFeat(newFeat)
+    }
+
+    let editFeat = (e: FormEvent<HTMLFormElement>): void => {
+        e.preventDefault()
+
+        let newFeat = new Feat(name, featLevel, description, feat?.getUuid())
+        resetFields()
+        returnEditFeat(newFeat)
     }
 
     let close = () => {
@@ -35,7 +58,7 @@ const FeatForm = ({ returnFeat, closeForm }: FeatFormProps) => {
 
     return (
         <div className="form">
-            <form onSubmit={(e) => addFeat(e)} className="form-group">
+            <form onSubmit={feat ? editFeat : addFeat} className="form-group">
                 <h3>Feat of Exploration</h3>
                 <label htmlFor="feat-level">Feat Award</label>
                 <select

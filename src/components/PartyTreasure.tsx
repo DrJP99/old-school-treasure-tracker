@@ -3,9 +3,14 @@ import { Coin_Treasure, Treasure } from '../service/Treasure'
 interface PartyTreasureProps {
     treasure: Treasure
     removeTreasure: (uuid: string) => void
+    editTreasure: (uuid: string) => void
 }
 
-const PartyTreasure = ({ treasure, removeTreasure }: PartyTreasureProps) => {
+const PartyTreasure = ({
+    treasure,
+    removeTreasure,
+    editTreasure,
+}: PartyTreasureProps) => {
     return (
         <div>
             {treasure instanceof Coin_Treasure ? (
@@ -47,7 +52,10 @@ const PartyTreasure = ({ treasure, removeTreasure }: PartyTreasureProps) => {
                 </>
             )}
             <p>
-                <button onClick={(e) => console.log('Edit')}>Edit</button>|{' '}
+                <button onClick={(e) => editTreasure(treasure.getUuid())}>
+                    Edit
+                </button>
+                |{' '}
                 <button onClick={(e) => removeTreasure(treasure.getUuid())}>
                     Remove
                 </button>

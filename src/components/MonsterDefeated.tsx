@@ -3,9 +3,14 @@ import { Monster } from '../service/Monster'
 interface MonsterDefeatedProps {
     monster: Monster
     removeMonster: (uuid: string) => void
+    editMonster: (uuid: string) => void
 }
 
-const MonsterDefeated = ({ monster, removeMonster }: MonsterDefeatedProps) => {
+const MonsterDefeated = ({
+    monster,
+    removeMonster,
+    editMonster,
+}: MonsterDefeatedProps) => {
     return (
         <div>
             <h3>
@@ -25,7 +30,10 @@ const MonsterDefeated = ({ monster, removeMonster }: MonsterDefeatedProps) => {
                 )}
             </p>
             <p>
-                <button onClick={(e) => console.log('Edit')}>Edit</button>|{' '}
+                <button onClick={(e) => editMonster(monster.getUuid())}>
+                    Edit
+                </button>
+                |{' '}
                 <button onClick={(e) => removeMonster(monster.getUuid())}>
                     Remove
                 </button>

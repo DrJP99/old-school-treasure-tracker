@@ -314,6 +314,24 @@ export class Party {
         this.num_shares = this.calculateShares()
         this.party_txp = this.calculatePartyTXP()
     }
+
+    public editTreasure = (treasure: Treasure): void => {
+        this.treasure = this.treasure.map((t) =>
+            t.getUuid() === treasure.getUuid() ? treasure : t
+        )
+    }
+
+    public editMonster = (monster: Monster): void => {
+        this.monsters = this.monsters.map((m) =>
+            m.getUuid() === monster.getUuid() ? monster : m
+        )
+    }
+
+    public editFeat = (feat: Feat): void => {
+        this.feats = this.feats.map((f) =>
+            f.getUuid() === feat.getUuid() ? feat : f
+        )
+    }
 }
 
 // let my_party: Party = new Party()

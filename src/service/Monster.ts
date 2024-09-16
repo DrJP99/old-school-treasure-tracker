@@ -7,9 +7,15 @@ export class Monster {
     private xp: number
     private qty: number
 
-    constructor(name: string, description: string, xp: number, qty: number) {
+    constructor(
+        name: string,
+        description: string,
+        xp: number,
+        qty: number,
+        uuid: string = uuidv4()
+    ) {
         this.name = name
-        this.uuid = uuidv4()
+        this.uuid = uuid
         this.description = description
         this.xp = xp
         this.qty = qty
