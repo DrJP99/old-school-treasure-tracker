@@ -116,6 +116,29 @@ export class Treasure {
 
         return xp
     }
+
+    public to_gp = (n: number, c: Denomination): number => {
+        let worth = 0
+
+        switch (c) {
+            case Denomination.pp:
+                worth = n * 5
+                break
+            case Denomination.gp:
+                worth = n
+                break
+            case Denomination.ep:
+                worth = n / 2
+                break
+            case Denomination.sp:
+                worth = n / 10
+                break
+            case Denomination.cp:
+                worth = n / 100
+        }
+
+        return worth
+    }
 }
 
 export class Coin_Treasure extends Treasure {

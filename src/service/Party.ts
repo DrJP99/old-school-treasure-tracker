@@ -165,6 +165,14 @@ export class Party {
         return this.characters
     }
 
+    public get_pcs = (): Character[] => {
+        return this.characters.filter((c) => !(c instanceof NPC))
+    }
+
+    public get_npcs = (): Character[] => {
+        return this.characters.filter((c) => c instanceof NPC)
+    }
+
     public get_treasure = (): Treasure[] => {
         return this.treasure
     }

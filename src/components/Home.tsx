@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import PartyFeat from './PartyFeat'
 import { Feat } from '../service/Feat'
 import FeatForm from './FeatForm'
+import { ToClipboard } from '../service/ToClipboard'
 
 const Home = () => {
     const [party, setParty] = useState<Party>(new Party())
@@ -202,6 +203,10 @@ const Home = () => {
         setParty(temp_party)
     }
 
+    let copyToClipboard = () => {
+        console.log(ToClipboard(party))
+    }
+
     return (
         <div className="home">
             <h1>OLD-SCHOOL TREASURE TRACKER</h1>
@@ -295,6 +300,14 @@ const Home = () => {
                             XP
                         </p>
                     ) : null}
+                    <p>
+                        <button
+                            className="btn btn-inline"
+                            onClick={(e) => copyToClipboard()}
+                        >
+                            Copy to Clipboard
+                        </button>
+                    </p>
                 </>
             ) : null}
 
