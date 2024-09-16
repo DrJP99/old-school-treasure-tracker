@@ -52,11 +52,17 @@ const PartyTreasure = ({
                 </>
             )}
             <p>
-                <button onClick={(e) => editTreasure(treasure.getUuid())}>
+                <button
+                    className="btn btn-inline"
+                    onClick={(e) => editTreasure(treasure.getUuid())}
+                >
                     Edit
-                </button>
+                </button>{' '}
                 |{' '}
-                <button onClick={(e) => removeTreasure(treasure.getUuid())}>
+                <button
+                    className="btn btn-inline"
+                    onClick={(e) => removeTreasure(treasure.getUuid())}
+                >
                     Remove
                 </button>
             </p>

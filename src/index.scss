@@ -15,7 +15,7 @@ $blue: #0A2463;
 // $light-blue: #83a598;
 $purple: #247BA0;
 // $light-purple: #d3869b;
-$aqua: #E2E2E2;
+$aqua: #85b06c;
 // $light-aqua: #8ec07c;
 $gray: #605F5E;
 $fg: #080402;
@@ -306,6 +306,18 @@ code {
 			content: "<- ";
 		}
 	}
+
+	&-inline {
+		padding: 0;
+		background-color: $bg;
+		color: $aqua;
+		margin-bottom: 10px;
+
+		&:hover {
+			text-decoration: underline;
+			// text-unde
+		}
+	}
 }
 
 .float {
@@ -399,7 +411,8 @@ h3 {
 }
 
 p {
-	margin-top: 5px;
+	margin-top: 7px;
+	margin-bottom: 7px;
 }
 
 .note {

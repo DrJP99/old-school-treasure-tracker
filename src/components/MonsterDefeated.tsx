@@ -30,11 +30,17 @@ const MonsterDefeated = ({
                 )}
             </p>
             <p>
-                <button onClick={(e) => editMonster(monster.getUuid())}>
+                <button
+                    className="btn btn-inline"
+                    onClick={(e) => editMonster(monster.getUuid())}
+                >
                     Edit
-                </button>
+                </button>{' '}
                 |{' '}
-                <button onClick={(e) => removeMonster(monster.getUuid())}>
+                <button
+                    className="btn btn-inline"
+                    onClick={(e) => removeMonster(monster.getUuid())}
+                >
                     Remove
                 </button>
             </p>

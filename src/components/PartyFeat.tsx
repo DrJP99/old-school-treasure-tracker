@@ -20,8 +20,17 @@ const PartyFeat = ({ feat, txp, removeFeat, editFeat }: PartyFeatProps) => {
                 {feat.getXP(txp)} XP
             </p>
             <p>
-                <button onClick={(e) => editFeat(feat.getUuid())}>Edit</button>|{' '}
-                <button onClick={(e) => removeFeat(feat.getUuid())}>
+                <button
+                    className="btn btn-inline"
+                    onClick={(e) => editFeat(feat.getUuid())}
+                >
+                    Edit
+                </button>{' '}
+                |{' '}
+                <button
+                    className="btn btn-inline"
+                    onClick={(e) => removeFeat(feat.getUuid())}
+                >
                     Remove
                 </button>
             </p>
