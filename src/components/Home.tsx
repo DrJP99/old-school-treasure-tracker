@@ -157,10 +157,11 @@ const Home = () => {
     let populate = () => {
         let temp_party = new Party(
             [
-                new Character('Vin', 5, 'thief', 0),
+                new Character('Vin', 5, 'thief', 5),
                 new Character('Bombur', 1, 'dwarf', 0),
-                new Character('Quackdalf', 3, 'Magic-User', 0),
+                new Character('Quackdalf', 3, 'Magic-User', -10),
                 new Character('Adolin', 6, 'fighter', 0),
+                new NPC('Jon Snow', 2, 'fighter', 0, 5, 'sp', '3/4'),
             ],
             [
                 new Coin_Treasure(6000, 'sp'),
