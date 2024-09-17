@@ -39,7 +39,6 @@ const Home = () => {
     const [loaded, setLoaded] = useState<boolean>(false)
 
     useEffect(() => {
-        // populate()
         loadParty()
     }, [])
 
@@ -47,6 +46,7 @@ const Home = () => {
         if (loaded) {
             saveParty()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [party])
 
     let cloneParty = (): Party => {
@@ -179,54 +179,6 @@ const Home = () => {
         setLoaded(true)
     }
 
-    let populate = () => {
-        let temp_party = new Party(
-            [
-                new Character('Vin', 5, 'thief', 5),
-                new Character('Bombur', 1, 'dwarf', 0),
-                new Character('Quackdalf', 3, 'Magic-User', -10),
-                new Character('Adolin', 6, 'fighter', 0),
-                new NPC('Jon Snow', 2, 'fighter', 0, 5, 'sp', '3/4'),
-            ],
-            [
-                new Coin_Treasure(6000, 'sp'),
-                new Coin_Treasure(300, 'gp'),
-                new Treasure('Emerald Necklace', '', 1, 1500, 'gp', 'each'),
-                new Treasure('Silver Brooch', '', 1, 750, 'gp', 'each'),
-            ],
-            [
-                new Monster('Carcass Crawlers', '', 75, 3),
-                new Monster('Giant Centipedes', '', 6, 5),
-                new Monster('Minotaurs', '', 275, 2),
-                new Monster('Hydra', '5HD', 175, 1),
-            ],
-            [
-                new Feat(
-                    'Trap',
-                    'minor',
-                    'Dwarf detects a boulder trap and gets everyone out just in time'
-                ),
-                new Feat(
-                    'Lore',
-                    'minor',
-                    "Magic-User recalls conversation with a sage about minotaur's ability to smell their prey. Party deliberately stays upwind of the minotaur, allowing for a surprise ambush"
-                ),
-                new Feat(
-                    'Skills',
-                    'minor',
-                    'Thief twirls his lockpicks in a dextrous manner across and between his knuckles on order to delight a small child kept prisoner in the dungeon'
-                ),
-                new Feat(
-                    'Quest',
-                    'major',
-                    'The party returns the small child to their parents back in town.'
-                ),
-            ]
-        )
-
-        setParty(temp_party)
-    }
-
     let copyToClipboard = () => {
         console.log('Copied!')
         navigator.clipboard.writeText(ToClipboard(party))
@@ -304,19 +256,23 @@ const Home = () => {
             {party.get_characters().length > 0 ? (
                 <>
                     <h2>
-                        Total XP: {party.get_total_xp() + party.get_feat_xp()}
+                        Total XP:{' '}
+                        {(
+                            party.get_total_xp() + party.get_feat_xp()
+                        ).toLocaleString()}
                     </h2>
                     {party.getNumPC() > 0 ? (
                         <>
                             <p>
-                                <b>Party TXP:</b> {party.get_party_txp()}
+                                <b>Party TXP:</b>{' '}
+                                {party.get_party_txp().toLocaleString()}
                             </p>
                             <p>
                                 <b>Each PC gains:</b>{' '}
                                 {Math.round(
                                     party.get_xp_per_pc_share()
-                                ).toFixed(0)}{' '}
-                                XP, {party.getGpPerPCShare()}gp
+                                ).toLocaleString()}{' '}
+                                XP, {party.getGpPerPCShare().toLocaleString()}gp
                             </p>
                         </>
                     ) : null}
@@ -326,7 +282,7 @@ const Home = () => {
                                 <b>Each NPC gains:</b>{' '}
                                 {Math.round(
                                     party.get_xp_per_npc_share()
-                                ).toFixed(0)}{' '}
+                                ).toLocaleString()}{' '}
                                 XP
                             </p>
                             <p>
@@ -337,7 +293,7 @@ const Home = () => {
                                     party.getGpPerFractionalShare()
                                 ).map(([k, v]) => (
                                     <li key={k}>
-                                        (<b>{k}</b>) {v}gp
+                                        (<b>{k}</b>) {v.toLocaleString()}gp
                                     </li>
                                 ))}
                             </ul>
@@ -374,7 +330,10 @@ const Home = () => {
             ) : null}
             {party.get_treasure().length > 0 ? (
                 <div>
-                    <h2>Treasure found: ({party.get_treasure_xp()} XP)</h2>
+                    <h2>
+                        Treasure found: (
+                        {party.get_treasure_xp().toLocaleString()} XP)
+                    </h2>
                     {party.get_treasure().map((t) => (
                         <PartyTreasure
                             treasure={t}
@@ -390,7 +349,10 @@ const Home = () => {
             ) : null}
             {party.get_monsters().length > 0 ? (
                 <div>
-                    <h2>Monsters defeated: ({party.get_monster_xp()} XP)</h2>
+                    <h2>
+                        Monsters defeated: (
+                        {party.get_monster_xp().toLocaleString()} XP)
+                    </h2>
                     {party.get_monsters().map((m) => (
                         <MonsterDefeated
                             monster={m}
@@ -406,7 +368,10 @@ const Home = () => {
             ) : null}
             {party.get_feats().length > 0 ? (
                 <div>
-                    <h2>Feats of Exploration ({party.get_feat_xp()} XP)</h2>
+                    <h2>
+                        Feats of Exploration (
+                        {party.get_feat_xp().toLocaleString()} XP)
+                    </h2>
                     {party.get_feats().map((f) => (
                         <PartyFeat
                             feat={f}

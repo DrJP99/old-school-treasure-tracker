@@ -54,17 +54,19 @@ const Char = ({
                             ? party.get_xp_per_npc_share()
                             : party.get_xp_per_pc_share()) *
                             character.get_xp_mod_percentage()
-                    ).toFixed(0)}{' '}
+                    ).toLocaleString()}{' '}
                 </li>
                 <li>
                     <b>Treasure:</b>{' '}
                     {character instanceof NPC
-                        ? party.getGpPerShare() *
-                          party.share_to_num(
-                              character.get_share(),
-                              party.get_pc_share()
-                          )
-                        : party.getGpPerPCShare()}
+                        ? (
+                              party.getGpPerShare() *
+                              party.share_to_num(
+                                  character.get_share(),
+                                  party.get_pc_share()
+                              )
+                          ).toLocaleString()
+                        : party.getGpPerPCShare().toLocaleString()}
                     gp
                 </li>
             </ul>

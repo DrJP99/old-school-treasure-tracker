@@ -182,7 +182,7 @@ export class Coin_Treasure extends Treasure {
     }
 
     to_string = (): string => {
-        return `${this.getQty()} ${this.getName()}`
+        return `${this.getQty().toLocaleString()} ${this.getName()}`
     }
 }
 

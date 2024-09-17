@@ -17,7 +17,7 @@ const PartyFeat = ({ feat, txp, removeFeat, editFeat }: PartyFeatProps) => {
                 {feat.getDescription().length > 0 ? (
                     <>{feat.getDescription()} - </>
                 ) : null}
-                {feat.getXP(txp)} XP
+                {feat.getXP(txp).toLocaleString()} XP
             </p>
             <p>
                 <button

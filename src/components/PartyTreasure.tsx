@@ -20,7 +20,7 @@ const PartyTreasure = ({
                     <h3>
                         {treasure.getQty() > 1 ? (
                             <>
-                                {treasure.getQty()}
+                                {treasure.getQty().toLocaleString()}
                                 {'x '}
                             </>
                         ) : (
@@ -36,7 +36,7 @@ const PartyTreasure = ({
                         )}
                         {treasure.getWorth() > 0 ? (
                             <>
-                                (worth {treasure.getWorth()}
+                                (worth {treasure.getWorth().toLocaleString()}
                                 {treasure.getWorth_coin()}
                                 {treasure.getQty() > 1 ? (
                                     <> {treasure.getWorth_determiner()}</>
