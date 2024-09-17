@@ -3,6 +3,10 @@ import { Feat } from './Feat'
 import { Monster } from './Monster'
 import { Treasure } from './Treasure'
 
+interface StringArray {
+    [index: string]: number
+}
+
 export class Party {
     private characters: Array<Character>
     private treasure: Array<Treasure>
@@ -309,6 +313,30 @@ export class Party {
         this.feats = this.feats.map((f) =>
             f.getUuid() === feat.getUuid() ? feat : f
         )
+    }
+
+    public getGpPerShare = (): number => {
+        return Math.round(this.get_treasure_xp() / this.num_shares)
+    }
+
+    public getGpPerPCShare = (): number => {
+        return this.getGpPerShare() * this.pc_share
+    }
+
+    public getGpPerFractionalShare = (): StringArray => {
+        let myObject: StringArray = {}
+
+        for (let c of this.characters) {
+            if (c instanceof NPC) {
+                if (!(c.get_share() in myObject)) {
+                    myObject[c.get_share()] =
+                        this.getGpPerShare() *
+                        this.share_to_num(c.get_share(), this.pc_share)
+                }
+            }
+        }
+
+        return myObject
     }
 }
 

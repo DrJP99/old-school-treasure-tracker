@@ -57,7 +57,15 @@ const Char = ({
                     ).toFixed(0)}{' '}
                 </li>
                 <li>
-                    <b>Treasure:</b> XXX
+                    <b>Treasure:</b>{' '}
+                    {character instanceof NPC
+                        ? party.getGpPerShare() *
+                          party.share_to_num(
+                              character.get_share(),
+                              party.get_pc_share()
+                          )
+                        : party.getGpPerPCShare()}
+                    gp
                 </li>
             </ul>
             <p>

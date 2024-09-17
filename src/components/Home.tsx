@@ -287,18 +287,32 @@ const Home = () => {
                                 {Math.round(
                                     party.get_xp_per_pc_share()
                                 ).toFixed(0)}{' '}
-                                XP
+                                XP, {party.getGpPerPCShare()}gp
                             </p>
                         </>
                     ) : null}
                     {party.getNumNPC() > 0 ? (
-                        <p>
-                            <b>Each NPC gains:</b>{' '}
-                            {Math.round(party.get_xp_per_npc_share()).toFixed(
-                                0
-                            )}{' '}
-                            XP
-                        </p>
+                        <>
+                            <p>
+                                <b>Each NPC gains:</b>{' '}
+                                {Math.round(
+                                    party.get_xp_per_npc_share()
+                                ).toFixed(0)}{' '}
+                                XP
+                            </p>
+                            <p>
+                                <b>Treasure per fractional share:</b>{' '}
+                            </p>
+                            <ul>
+                                {Object.entries(
+                                    party.getGpPerFractionalShare()
+                                ).map(([k, v]) => (
+                                    <li key={k}>
+                                        (<b>{k}</b>) {v}gp
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
                     ) : null}
                     <p>
                         <button

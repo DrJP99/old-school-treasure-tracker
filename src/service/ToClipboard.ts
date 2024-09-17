@@ -86,7 +86,15 @@ export let ToClipboard = (party: Party): string => {
     text += `### Total\n\n`
     text += `Total XP: ${party.get_total_xp()}\n\n`
     text += `XP per PC: ${Math.round(party.get_xp_per_pc_share())}\n\n`
+    text += `Share of treasure per PC: ${party.getGpPerPCShare()}gp\n\n`
     text += `XP per NPC: ${Math.round(party.get_xp_per_npc_share())}\n\n`
+    if (party.getNumNPC() > 0) {
+        text += `Share of treasure per NPC:\n\n`
+
+        Object.entries(party.getGpPerFractionalShare()).forEach(
+            ([k, v]) => (text += `- (${k}): ${v}gp\n`)
+        )
+    }
 
     return text
 }
