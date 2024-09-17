@@ -36,9 +36,18 @@ const Home = () => {
 
     const [copied, setCopied] = useState<boolean>(false)
 
+    const [loaded, setLoaded] = useState<boolean>(false)
+
     useEffect(() => {
-        populate()
+        // populate()
+        loadParty()
     }, [])
+
+    useEffect(() => {
+        if (loaded) {
+            saveParty()
+        }
+    }, [party])
 
     let cloneParty = (): Party => {
         return new Party(
@@ -155,6 +164,19 @@ const Home = () => {
         let temp_party = cloneParty()
         temp_party.removeFeat(uuid)
         setParty(temp_party)
+    }
+
+    let saveParty = (): void => {
+        localStorage.setItem('party', JSON.stringify(party))
+    }
+
+    let loadParty = (): void => {
+        let myParty = JSON.parse(window.localStorage.getItem('party') || '""')
+
+        let temp_party = new Party()
+        temp_party.JSONparse(myParty)
+        setParty(temp_party)
+        setLoaded(true)
     }
 
     let populate = () => {

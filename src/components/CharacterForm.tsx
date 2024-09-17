@@ -44,7 +44,7 @@ const CharacterForm = ({
                 setPc(PC.pc)
             }
         }
-    }, [])
+    }, [character])
 
     let resetFields = () => {
         setName('')

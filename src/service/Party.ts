@@ -1,7 +1,8 @@
+/* eslint-disable react/no-is-mounted */
 import { Character, NPC } from './Character'
 import { Feat } from './Feat'
 import { Monster } from './Monster'
-import { Treasure } from './Treasure'
+import { Coin_Treasure, Treasure } from './Treasure'
 
 interface StringArray {
     [index: string]: number
@@ -337,6 +338,80 @@ export class Party {
         }
 
         return myObject
+    }
+
+    public JSONparse = (json: any): void => {
+        json['characters']?.forEach((c: any) => {
+            if (c['pc']) {
+                this.add_character(
+                    new Character(
+                        c['name'],
+                        c['level'],
+                        c['char_class'],
+                        c['xp_mod'],
+                        c['pc'],
+                        c['uuid']
+                    )
+                )
+            } else {
+                this.add_character(
+                    new NPC(
+                        c['name'],
+                        c['level'],
+                        c['char_class'],
+                        c['xp_mod'],
+                        c['wage'],
+                        c['wage_coin'],
+                        c['share'],
+                        c['uuid']
+                    )
+                )
+            }
+        })
+
+        json['feats']?.forEach((f: any) =>
+            this.addFeat(
+                new Feat(f['name'], f['featLevel'], f['description'], f['uuid'])
+            )
+        )
+
+        json['monsters']?.forEach((m: any) =>
+            this.addMonster(
+                new Monster(
+                    m['name'],
+                    m['description'],
+                    m['xp'],
+                    m['qty'],
+                    m['uuid']
+                )
+            )
+        )
+
+        json['treasure']?.forEach((t: any) => {
+            if (t['treasureType'] === 'treasure') {
+                this.addTreasure(
+                    new Treasure(
+                        t['name'],
+                        t['description'],
+                        t['qty'],
+                        t['worth'],
+                        t['worth_coin'],
+                        t['worth_determiner'],
+                        t['uuid']
+                    )
+                )
+            } else {
+                this.addTreasure(
+                    new Coin_Treasure(t['qty'], t['worth_coin'], t['uuid'])
+                )
+            }
+        })
+
+        // this.calculatePartyTXP()
+        // this.calculateShares()
+        // this.calculateXPShares()
+
+        console.log(this)
     }
 }
 

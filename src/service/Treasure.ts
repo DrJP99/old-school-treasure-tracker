@@ -2,6 +2,11 @@ import { Denomination } from './Denomination'
 import { Determiner } from './Determiner'
 import { v4 as uuidv4 } from 'uuid'
 
+enum TreasureType {
+    treasure = 'treasure',
+    coin = 'coin',
+}
+
 export class Treasure {
     private name: string
     private uuid: string
@@ -10,6 +15,7 @@ export class Treasure {
     private worth: number
     private worth_coin: Denomination
     private worth_determiner: Determiner
+    private treasureType: TreasureType
 
     constructor(
         name: string,
@@ -18,7 +24,8 @@ export class Treasure {
         worth: number,
         worth_coin: string,
         worth_determiner: string,
-        uuid: string = uuidv4()
+        uuid: string = uuidv4(),
+        treasureType = TreasureType.treasure
     ) {
         this.name = name
         this.uuid = uuid
@@ -27,6 +34,7 @@ export class Treasure {
         this.worth = worth
         this.worth_coin = worth_coin as Denomination
         this.worth_determiner = worth_determiner as Determiner
+        this.treasureType = treasureType as TreasureType
     }
 
     public getName(): string {
@@ -161,7 +169,16 @@ export class Coin_Treasure extends Treasure {
                 name = 'Copper'
                 break
         }
-        super(`${name} coins`, '', qty, qty, worth_coin, 'total', uuid)
+        super(
+            `${name} coins`,
+            '',
+            qty,
+            qty,
+            worth_coin,
+            'total',
+            uuid,
+            TreasureType.coin
+        )
     }
 
     to_string = (): string => {
