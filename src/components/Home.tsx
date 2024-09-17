@@ -196,24 +196,27 @@ const Home = () => {
             {buttonsVisible ? (
                 <div id="create-buttons">
                     <button
-                        className="btn btn-accept"
+                        className="btn btn-inline"
                         onClick={showCharacterForm}
                     >
                         Add Character
                     </button>
+                    {' | '}
                     <button
-                        className="btn btn-accept"
+                        className="btn btn-inline"
                         onClick={showTreasureForm}
                     >
                         Add Treasure
                     </button>
+                    {' | '}
                     <button
-                        className="btn btn-accept"
+                        className="btn btn-inline"
                         onClick={showMonsterForm}
                     >
                         Add Monster
                     </button>
-                    <button className="btn  btn-accept" onClick={showFeatForm}>
+                    {' | '}
+                    <button className="btn  btn-inline" onClick={showFeatForm}>
                         Add Feat of Exploration
                     </button>
                 </div>

@@ -155,6 +155,7 @@ body {
         background-color: $bg;
         color: $aqua;
         margin-bottom: 10px;
+        font-size: medium;
 
         &:hover {
             text-decoration: underline;
@@ -236,6 +237,7 @@ h1 {
     // color: $red;
     font-size: 5em;
     font-weight: normal;
+    text-align: center;
 }
 
 h2 {
