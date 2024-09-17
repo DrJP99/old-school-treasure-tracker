@@ -31,6 +31,11 @@ $top-padding: 10px;
 
 $radius: 10px;
 
+$x-small: 0px;
+$small: 640px;
+$medium: 768px;
+$large: 1024px;
+
 * {
     &::selection {
         background: $red;
@@ -48,149 +53,27 @@ body {
     color: $fg;
 }
 
-.main {
-    padding: $top-padding $side-padding;
-}
-
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
-}
-
-.note-card {
-    border-style: solid;
-    border-radius: $radius;
-    border-width: 3px;
-    border-color: $gray;
-
-    padding: 16px 24px;
-    margin: 10px;
-
-    .card-header {
-        margin-bottom: 16px;
-        border-bottom: $gray;
-        border-bottom-style: solid;
-        border-bottom-width: 2px;
-
-        &-top {
-            display: flex;
-            // padding-top: 6px;
-
-            .card-title {
-                margin: 0;
-            }
-
-            .date {
-                display: inline;
-                margin: 0;
-                margin-left: auto;
-                color: $light-black;
-                // font-weight: bold;
-
-                &::after {
-                    content: ' /';
-                    font-weight: bold;
-                    color: $fg;
-                }
-
-                &::before {
-                    content: '/ ';
-                    font-weight: bold;
-                    color: $fg;
-                }
-            }
-        }
-    }
-
-    // .card-body {
-    // 	// float: left;
-    // }
-}
-
-.tags {
-    padding: 0 0 12px 0;
-
-    .tag {
-        font-size: small;
-        font-weight: bold;
-        margin: 0 8px 0 0;
-        padding: 5px;
-        border-radius: 100px;
-
-        &::before {
-            content: '#';
-        }
-
-        &-undefined {
-            display: none;
-        }
-
-        &-archived {
-            background-color: $bg1;
-            color: $gray;
-        }
-
-        &-red {
-            background-color: $red;
-            color: $fg;
-        }
-
-        &-green {
-            background-color: $green;
-        }
-
-        &-purple {
-            background-color: $purple;
-        }
-
-        &-blue {
-            background-color: $blue;
-        }
-
-        &-yellow {
-            background-color: $yellow;
-        }
-    }
-
-    &-selector {
-        padding: 16px 8px;
-        border-radius: $radius;
-
-        .tag {
-            &:hover {
-                cursor: pointer;
-            }
-        }
-
-        &-selected {
-            background-color: $bg1;
-
-            &::before {
-                content: 'Selected tags: \a\a';
-                white-space: pre;
-            }
-        }
-
-        &-avail {
-            background-color: $bg0_h;
-
-            &::before {
-                content: 'Other available tags: \a\a';
-                white-space: pre;
-            }
-        }
+@media (min-width: $x-small) {
+    .main {
+        padding: $top-padding 5%;
     }
 }
 
-.note-creator {
-    color: $fg;
-    font-weight: bold;
-    margin: 8px 0 16px 0;
+@media (min-width: $small) {
+    .main {
+        padding: $top-padding 5%;
+    }
+}
 
-    &::before {
-        font-weight: bold;
-        color: $fg;
-        content: '> ';
+@media (min-width: $medium) {
+    .main {
+        padding: $top-padding 10%;
+    }
+}
+
+@media (min-width: $large) {
+    .main {
+        padding: $top-padding $side-padding;
     }
 }
 
@@ -259,45 +142,11 @@ code {
         }
     }
 
-    &-good {
-        background-color: $green;
-
-        &:hover {
-            // background-color: $light-green;
-        }
-    }
-
     &-danger {
         background-color: $red;
 
         &:hover {
             // background-color: $light-red;
-        }
-    }
-
-    &-warning {
-        background-color: $yellow;
-
-        &:hover {
-            // background-color: $light-yellow;
-        }
-    }
-
-    &-gray {
-        background-color: $light-black;
-
-        &:hover {
-            background-color: $gray;
-        }
-    }
-
-    &-goback {
-        padding: 6px;
-        font-size: small;
-        margin: 12px 0;
-
-        &::before {
-            content: '<- ';
         }
     }
 
@@ -370,16 +219,6 @@ code {
     }
 }
 
-a {
-    color: $purple;
-    text-decoration: none;
-
-    &:hover {
-        background: $purple;
-        color: $bg;
-    }
-}
-
 h1 {
     font-family:
         'Pirata One',
@@ -418,41 +257,6 @@ h3 {
 p {
     margin-top: 7px;
     margin-bottom: 7px;
-}
-
-.note {
-    border-radius: $radius;
-    border-color: $gray;
-    border-style: solid;
-    padding: 32px;
-
-    &-header {
-        margin-bottom: 32px;
-        border-bottom: $gray;
-        border-bottom-width: 2px;
-        border-bottom-style: solid;
-    }
-
-    &-body {
-        padding: 16px;
-        background-color: $bg0_h;
-        border-radius: $radius;
-    }
-
-    &-date {
-        color: $light-black;
-    }
-
-    &-buttons {
-        margin-top: 16px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    h2 {
-        margin: 0;
-        font-size: x-large;
-    }
 }
 
 .filter-select {
