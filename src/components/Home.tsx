@@ -34,6 +34,8 @@ const Home = () => {
     )
     const [formFeat, setFormFeat] = useState<Feat | undefined>(undefined)
 
+    const [copied, setCopied] = useState<boolean>(false)
+
     useEffect(() => {
         populate()
     }, [])
@@ -204,7 +206,12 @@ const Home = () => {
     }
 
     let copyToClipboard = () => {
-        console.log(ToClipboard(party))
+        console.log('Copied!')
+        navigator.clipboard.writeText(ToClipboard(party))
+        setCopied(true)
+        setTimeout(() => {
+            setCopied(false)
+        }, 3000)
     }
 
     return (
@@ -317,10 +324,11 @@ const Home = () => {
                     <p>
                         <button
                             className="btn btn-inline"
-                            onClick={(e) => copyToClipboard()}
+                            onClick={() => copyToClipboard()}
                         >
                             Copy to Clipboard
                         </button>
+                        {copied ? <span>{'  '}Copied!</span> : null}
                     </p>
                 </>
             ) : null}
