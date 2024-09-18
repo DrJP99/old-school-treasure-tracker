@@ -29,6 +29,14 @@ const CharacterForm = ({
     const [wageCoin, setWageCoin] = useState<Denomination>(Denomination.gp)
     const [share, setShare] = useState<string>('1/2')
 
+    const [isNameError, setIsNameError] = useState<boolean>(false)
+    const [isShareError, setIsShareError] = useState<boolean>(false)
+    const [isLevelError, setIsLevelError] = useState<boolean>(false)
+    const [isXpError, setXpError] = useState<boolean>(false)
+    const [isWageError, setIsWageError] = useState<boolean>(false)
+
+    const shareRegex: RegExp = /^[1234]\/[1234]$/
+
     useEffect(() => {
         if (character) {
             setName(character.get_name())
@@ -57,46 +65,96 @@ const CharacterForm = ({
         setShare('1/2')
     }
 
+    let validate = (): boolean => {
+        let error: boolean = false
+        if (name.length === 0) {
+            setIsNameError(true)
+            error = true
+        } else {
+            setIsNameError(false)
+        }
+        if (!shareRegex.test(share)) {
+            error = true
+            setIsShareError(true)
+        } else {
+            setIsShareError(false)
+        }
+        if (level < 1) {
+            setIsLevelError(true)
+            error = true
+        } else {
+            setIsLevelError(false)
+        }
+        if (![-10, -5, 0, 5, 10].includes(xpMod)) {
+            setXpError(true)
+            error = true
+        } else {
+            setXpError(false)
+        }
+        if (wage < 1) {
+            setIsWageError(true)
+            error = true
+        } else {
+            setIsWageError(false)
+        }
+
+        return error
+    }
+
     let addCharacter = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
+        let error: boolean = validate()
 
-        var char: Character
-        if (pc === PC.pc) {
-            char = new Character(name, level, charClass, xpMod)
-        } else {
-            char = new NPC(name, level, charClass, xpMod, wage, wageCoin, share)
+        if (!error) {
+            var char: Character
+            if (pc === PC.pc) {
+                char = new Character(name, level, charClass, xpMod)
+            } else {
+                char = new NPC(
+                    name,
+                    level,
+                    charClass,
+                    xpMod,
+                    wage,
+                    wageCoin,
+                    share
+                )
+                resetFields()
+                returnCharacter(char)
+            }
         }
-        resetFields()
-        returnCharacter(char)
     }
 
     let editCharacter = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
+        let error: boolean = validate()
 
-        var char: Character
-        if (pc === PC.pc) {
-            char = new Character(
-                name,
-                level,
-                charClass,
-                xpMod,
-                true,
-                character?.get_uuid()
-            )
-        } else {
-            char = new NPC(
-                name,
-                level,
-                charClass,
-                xpMod,
-                wage,
-                wageCoin,
-                share,
-                character?.get_uuid()
-            )
+        if (!error) {
+            var char: Character
+            if (pc === PC.pc) {
+                char = new Character(
+                    name,
+                    level,
+                    charClass,
+                    xpMod,
+                    true,
+                    character?.get_uuid()
+                )
+            } else {
+                char = new NPC(
+                    name,
+                    level,
+                    charClass,
+                    xpMod,
+                    wage,
+                    wageCoin,
+                    share,
+                    character?.get_uuid()
+                )
+            }
+            resetFields()
+            returnEditCharacter(char)
         }
-        resetFields()
-        returnEditCharacter(char)
     }
 
     let close = () => {
@@ -125,7 +183,14 @@ const CharacterForm = ({
                         </option>
                     ))}
                 </select>
-                <label htmlFor="character-name">Name</label>
+                <label htmlFor="character-name">
+                    Name{' '}
+                    {isNameError && (
+                        <span className="error-message">
+                            invalid name, cannot be empty
+                        </span>
+                    )}
+                </label>
                 <input
                     name="name"
                     id="character-name"
@@ -136,7 +201,14 @@ const CharacterForm = ({
                         setName(e.target.value)
                     }}
                 />
-                <label htmlFor="character-level">Level</label>
+                <label htmlFor="character-level">
+                    Level{' '}
+                    {isLevelError && (
+                        <span className="error-message">
+                            invalid level, must be at least 1
+                        </span>
+                    )}
+                </label>
                 <input
                     name="level"
                     id="character-level"
@@ -157,7 +229,14 @@ const CharacterForm = ({
                         </option>
                     ))}
                 </select>
-                <label htmlFor="character-xp">XP Bonus</label>
+                <label htmlFor="character-xp">
+                    XP Bonus{' '}
+                    {isXpError && (
+                        <span className="error-message">
+                            invalid xp bonus, must be -10, -5, 0, 5 or 10
+                        </span>
+                    )}
+                </label>
                 <input
                     name="xp"
                     id="character-xp"
@@ -168,7 +247,14 @@ const CharacterForm = ({
                 />
                 {pc === PC.npc ? (
                     <>
-                        <label htmlFor="character-wage">Daily Wage</label>
+                        <label htmlFor="character-wage">
+                            Daily Wage{' '}
+                            {isWageError && (
+                                <span className="error-message">
+                                    invalid daily wage, must be at least 1
+                                </span>
+                            )}
+                        </label>
                         <input
                             name="wage"
                             id="character-wage"
@@ -193,7 +279,14 @@ const CharacterForm = ({
                                 </option>
                             ))}
                         </select>
-                        <label htmlFor="character-share">Treasure Share</label>
+                        <label htmlFor="character-share">
+                            Treasure Share{' '}
+                            {isShareError && (
+                                <span className="error-message">
+                                    invalid share, must match [1234]/[1234]
+                                </span>
+                            )}
+                        </label>
                         <input
                             name="share"
                             id="character-share"

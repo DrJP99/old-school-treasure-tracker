@@ -19,6 +19,10 @@ const MonsterForm = ({
     const [xp, setXp] = useState(0)
     const [qty, setQty] = useState(1)
 
+    const [isNameError, setIsNameError] = useState<boolean>(false)
+    const [isQtyError, setIsQtyError] = useState<boolean>(false)
+    const [isXpError, setXpError] = useState<boolean>(false)
+
     useEffect(() => {
         if (monster) {
             setName(monster.get_name())
@@ -35,27 +39,58 @@ const MonsterForm = ({
         setQty(1)
     }
 
+    let validate = (): boolean => {
+        let error = false
+
+        if (name.length < 1) {
+            setIsNameError(true)
+            error = true
+        } else {
+            setIsNameError(false)
+        }
+        if (qty < 1) {
+            setIsQtyError(true)
+            error = true
+        } else {
+            setIsQtyError(false)
+        }
+        if (xp < 1) {
+            setXpError(true)
+            error = true
+        } else {
+            setXpError(false)
+        }
+
+        return error
+    }
+
     let addMonster = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
+        let error = validate()
 
-        const monster = new Monster(name, description, xp, qty)
-        resetFields()
-        returnMonster(monster)
+        if (!error) {
+            const monster = new Monster(name, description, xp, qty)
+            resetFields()
+            returnMonster(monster)
+        }
     }
 
     let editMonster = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
+        let error = validate()
 
-        const newMonster = new Monster(
-            name,
-            description,
-            xp,
-            qty,
-            monster?.getUuid()
-        )
+        if (!error) {
+            const newMonster = new Monster(
+                name,
+                description,
+                xp,
+                qty,
+                monster?.getUuid()
+            )
 
-        resetFields()
-        returnEditMonster(newMonster)
+            resetFields()
+            returnEditMonster(newMonster)
+        }
     }
 
     let close = () => {
@@ -70,7 +105,14 @@ const MonsterForm = ({
                 className="form-group"
             >
                 <h3>Monster</h3>
-                <label htmlFor="monster-name">Name</label>
+                <label htmlFor="monster-name">
+                    Name{' '}
+                    {isNameError && (
+                        <span className="error-message">
+                            invalid name, cannot be empty
+                        </span>
+                    )}
+                </label>
                 <input
                     name="name"
                     id="monster-name"
@@ -88,7 +130,14 @@ const MonsterForm = ({
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
-                <label htmlFor="monster-qty">Quantity</label>
+                <label htmlFor="monster-qty">
+                    Quantity{' '}
+                    {isQtyError && (
+                        <span className="error-message">
+                            invalid quantity, must be at least 1
+                        </span>
+                    )}
+                </label>
                 <input
                     name="qty"
                     id="monster-qty"
@@ -97,7 +146,14 @@ const MonsterForm = ({
                     value={qty}
                     onChange={(e) => setQty(Number(e.target.value))}
                 />
-                <label htmlFor="monster-xp">XP for Each Monster</label>
+                <label htmlFor="monster-xp">
+                    XP for Each Monster{' '}
+                    {isXpError && (
+                        <span className="error-message">
+                            invalid xp, must be at least 1
+                        </span>
+                    )}
+                </label>
                 <input
                     name="xp"
                     type="number"
