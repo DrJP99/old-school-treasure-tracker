@@ -53,9 +53,33 @@ body {
     color: $fg;
 }
 
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: #000000, $alpha: 0.6);
+
+    &-main {
+        z-index: 100000000;
+        position: fixed;
+        height: auto;
+    }
+}
+
 @media (min-width: $x-small) {
     .main {
         padding: $top-padding 5%;
+    }
+
+    .modal {
+        &-main {
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     }
 }
 
@@ -63,17 +87,44 @@ body {
     .main {
         padding: $top-padding 5%;
     }
+
+    .modal {
+        &-main {
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            transform: translate(-50%, -50%);
+        }
+    }
 }
 
 @media (min-width: $medium) {
     .main {
         padding: $top-padding 10%;
     }
+
+    .modal {
+        &-main {
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            transform: translate(-50%, -50%);
+        }
+    }
 }
 
 @media (min-width: $large) {
     .main {
         padding: $top-padding $side-padding;
+    }
+
+    .modal {
+        &-main {
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            transform: translate(-50%, -50%);
+        }
     }
 }
 
@@ -82,6 +133,7 @@ body {
     border: 3px solid $gray;
     border-radius: $radius;
     margin: auto;
+    background: $bg;
 
     .form-group {
         padding: 20px;
@@ -310,6 +362,7 @@ ul {
             left: -1em;
             top: 1em;
             position: relative;
+            z-index: -1;
         }
     }
 }

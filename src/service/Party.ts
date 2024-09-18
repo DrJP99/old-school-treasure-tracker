@@ -411,7 +411,7 @@ export class Party {
         // this.calculateShares()
         // this.calculateXPShares()
 
-        console.log(this)
+        // console.log(this)
     }
 }
 

@@ -13,16 +13,10 @@ import PartyFeat from './PartyFeat'
 import { Feat } from '../service/Feat'
 import FeatForm from './FeatForm'
 import { ToClipboard } from '../service/ToClipboard'
+import Modal from './Modal'
 
 const Home = () => {
     const [party, setParty] = useState<Party>(new Party())
-
-    const [characterFormVisible, setCharacterFormVisible] = useState(false)
-    const [treasureFormVisible, setTreasureFormVisible] = useState(false)
-    const [monsterFormVisible, setMonsterFormVisible] = useState(false)
-    const [featFormVisible, setFeatFormVisible] = useState(false)
-    const [buttonsVisible, setButtonsVisible] = useState(true)
-
     const [formCharacter, setFormCharacter] = useState<
         Character | NPC | undefined
     >(undefined)
@@ -38,6 +32,15 @@ const Home = () => {
 
     const [loaded, setLoaded] = useState<boolean>(false)
 
+    enum Element {
+        character = 'character',
+        treasure = 'treasure',
+        monster = 'monster',
+        feat = 'feat',
+    }
+
+    const [showModal, setShowModal] = useState<Element | undefined>(undefined)
+
     useEffect(() => {
         loadParty()
     }, [])
@@ -48,6 +51,15 @@ const Home = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [party])
+
+    useEffect(() => {
+        // prevent scrolling when modal is open
+        if (showModal) {
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = 'scroll'
+        }
+    }, [showModal])
 
     let cloneParty = (): Party => {
         return new Party(
@@ -62,108 +74,67 @@ const Home = () => {
         )
     }
 
-    let addCharacter = (char: Character) => {
+    let add = (element: Character | Treasure | Monster | Feat) => {
         let temp_party = cloneParty()
-        temp_party.add_character(char)
-        setParty(temp_party)
-        setFormCharacter(undefined)
-        showCharacterForm()
-    }
-
-    let editCharacter = (character: Character) => {
-        let temp_party = cloneParty()
-        temp_party.editCharacter(character)
-        setParty(temp_party)
-        showCharacterForm()
-    }
-
-    let addTreasure = (treasure: Treasure) => {
-        let temp_party = cloneParty()
-        temp_party.addTreasure(treasure)
-        setParty(temp_party)
-        showTreasureForm()
-    }
-
-    let editTreasure = (treasure: Treasure) => {
-        let temp_party = cloneParty()
-        temp_party.editTreasure(treasure)
-        setParty(temp_party)
-        showTreasureForm()
-    }
-
-    let addMonster = (monster: Monster) => {
-        let temp_party = cloneParty()
-        temp_party.addMonster(monster)
-        setParty(temp_party)
-        showMonsterForm()
-    }
-
-    let editMonster = (monster: Monster) => {
-        let temp_party = cloneParty()
-        temp_party.editMonster(monster)
-        setParty(temp_party)
-        showMonsterForm()
-    }
-
-    let addFeat = (feat: Feat) => {
-        let temp_party = cloneParty()
-        temp_party.addFeat(feat)
-        setParty(temp_party)
-        showFeatForm()
-    }
-
-    let editFeat = (feat: Feat) => {
-        let temp_party = cloneParty()
-        temp_party.editFeat(feat)
-        setParty(temp_party)
-        showFeatForm()
-    }
-
-    let showCharacterForm = () => {
-        setButtonsVisible(!buttonsVisible)
-        setCharacterFormVisible(!characterFormVisible)
-        if (characterFormVisible) {
+        if (element instanceof Character) {
+            temp_party.add_character(element)
             setFormCharacter(undefined)
+        } else if (element instanceof Treasure) {
+            temp_party.addTreasure(element)
+            setFormTreasure(undefined)
+        } else if (element instanceof Monster) {
+            temp_party.addMonster(element)
+            setFormMonster(undefined)
+        } else if (element instanceof Feat) {
+            temp_party.addFeat(element)
+            setFormFeat(undefined)
+        } else {
+            console.error(`${element} is not permitted!`)
         }
-    }
-
-    let showTreasureForm = () => {
-        setButtonsVisible(!buttonsVisible)
-        setTreasureFormVisible(!treasureFormVisible)
-    }
-
-    let showMonsterForm = () => {
-        setButtonsVisible(!buttonsVisible)
-        setMonsterFormVisible(!monsterFormVisible)
-    }
-
-    let showFeatForm = () => {
-        setButtonsVisible(!buttonsVisible)
-        setFeatFormVisible(!featFormVisible)
-    }
-
-    let removeMonster = (uuid: string) => {
-        let temp_party = cloneParty()
-        temp_party.removeMonster(uuid)
         setParty(temp_party)
+        closeModal()
     }
 
-    let removeTreasure = (uuid: string) => {
+    let edit = (element: Character | Treasure | Monster | Feat) => {
         let temp_party = cloneParty()
-        temp_party.removeTreasure(uuid)
+        if (element instanceof Character) {
+            temp_party.editCharacter(element)
+            setFormCharacter(undefined)
+        } else if (element instanceof Treasure) {
+            temp_party.editTreasure(element)
+            setFormTreasure(undefined)
+        } else if (element instanceof Monster) {
+            temp_party.editMonster(element)
+            setFormMonster(undefined)
+        } else if (element instanceof Feat) {
+            temp_party.editFeat(element)
+            setFormFeat(undefined)
+        } else {
+            console.error(`${element} is not permitted!`)
+        }
         setParty(temp_party)
+        closeModal()
     }
 
-    let removeCharacter = (uuid: string) => {
+    let remove = (element: Character | Treasure | Monster | Feat) => {
         let temp_party = cloneParty()
-        temp_party.remove_character_by_uuid(uuid)
+        if (element instanceof Character) {
+            temp_party.remove_character_by_uuid(element.get_uuid())
+            setFormCharacter(undefined)
+        } else if (element instanceof Treasure) {
+            temp_party.removeTreasure(element.getUuid())
+            setFormTreasure(undefined)
+        } else if (element instanceof Monster) {
+            temp_party.removeMonster(element.getUuid())
+            setFormMonster(undefined)
+        } else if (element instanceof Feat) {
+            temp_party.removeFeat(element.getUuid())
+            setFormFeat(undefined)
+        } else {
+            console.error(`${element} is not permitted!`)
+        }
         setParty(temp_party)
-    }
-
-    let removeFeat = (uuid: string) => {
-        let temp_party = cloneParty()
-        temp_party.removeFeat(uuid)
-        setParty(temp_party)
+        closeModal()
     }
 
     let saveParty = (): void => {
@@ -188,73 +159,94 @@ const Home = () => {
         }, 3000)
     }
 
+    let closeModal = () => {
+        setFormCharacter(undefined)
+        setFormTreasure(undefined)
+        setFormMonster(undefined)
+        setFormFeat(undefined)
+        setShowModal(undefined)
+    }
+
     return (
         <div className="home">
             <h1>OLD-SCHOOL TREASURE TRACKER</h1>
 
             <h2>Add Characters, Treasure or Monsters</h2>
-            {buttonsVisible ? (
-                <div id="create-buttons">
-                    <button
-                        className="btn btn-inline"
-                        onClick={showCharacterForm}
-                    >
-                        Add Character
-                    </button>
-                    {' | '}
-                    <button
-                        className="btn btn-inline"
-                        onClick={showTreasureForm}
-                    >
-                        Add Treasure
-                    </button>
-                    {' | '}
-                    <button
-                        className="btn btn-inline"
-                        onClick={showMonsterForm}
-                    >
-                        Add Monster
-                    </button>
-                    {' | '}
-                    <button className="btn  btn-inline" onClick={showFeatForm}>
-                        Add Feat of Exploration
-                    </button>
-                </div>
-            ) : null}
 
-            {characterFormVisible ? (
-                <CharacterForm
-                    returnCharacter={addCharacter}
-                    returnEditCharacter={editCharacter}
-                    closeForm={showCharacterForm}
-                    character={formCharacter}
-                />
-            ) : null}
-            {treasureFormVisible ? (
-                <TreasureForm
-                    returnTreasure={addTreasure}
-                    returnEditTreasure={editTreasure}
-                    closeForm={showTreasureForm}
-                    treasure={formTreasure}
-                />
-            ) : null}
-            {monsterFormVisible ? (
-                <MonsterForm
-                    returnMonster={addMonster}
-                    returnEditMonster={editMonster}
-                    closeForm={showMonsterForm}
-                    monster={formMonster}
-                />
-            ) : null}
+            <div id="create-buttons">
+                <button
+                    className="btn btn-inline"
+                    onClick={() => {
+                        setShowModal(Element.character)
+                    }}
+                >
+                    Add Character
+                </button>
+                {' | '}
+                <button
+                    className="btn btn-inline"
+                    onClick={() => {
+                        setShowModal(Element.treasure)
+                    }}
+                >
+                    Add Treasure
+                </button>
+                {' | '}
+                <button
+                    className="btn btn-inline"
+                    onClick={() => {
+                        setShowModal(Element.monster)
+                    }}
+                >
+                    Add Monster
+                </button>
+                {' | '}
+                <button
+                    className="btn  btn-inline"
+                    onClick={() => {
+                        setShowModal(Element.feat)
+                    }}
+                >
+                    Add Feat of Exploration
+                </button>
+            </div>
 
-            {featFormVisible ? (
-                <FeatForm
-                    returnFeat={addFeat}
-                    returnEditFeat={editFeat}
-                    closeForm={showFeatForm}
-                    feat={formFeat}
-                />
-            ) : null}
+            {showModal && (
+                <Modal closeModal={closeModal}>
+                    {showModal === Element.character && (
+                        <CharacterForm
+                            returnCharacter={add}
+                            returnEditCharacter={edit}
+                            closeForm={closeModal}
+                            character={formCharacter}
+                        />
+                    )}
+                    {showModal === Element.treasure && (
+                        <TreasureForm
+                            returnTreasure={add}
+                            returnEditTreasure={edit}
+                            closeForm={closeModal}
+                            treasure={formTreasure}
+                        />
+                    )}
+                    {showModal === Element.monster && (
+                        <MonsterForm
+                            returnMonster={add}
+                            returnEditMonster={edit}
+                            closeForm={closeModal}
+                            monster={formMonster}
+                        />
+                    )}
+                    {showModal === Element.feat && (
+                        <FeatForm
+                            returnFeat={add}
+                            returnEditFeat={edit}
+                            closeForm={closeModal}
+                            feat={formFeat}
+                        />
+                    )}
+                </Modal>
+            )}
 
             {party.get_characters().length > 0 ? (
                 <>
@@ -321,10 +313,10 @@ const Home = () => {
                         <Char
                             character={c}
                             party={party}
-                            removeCharacter={removeCharacter}
-                            editCharacter={(e) => {
+                            removeCharacter={() => remove(c)}
+                            editCharacter={() => {
                                 setFormCharacter(c)
-                                showCharacterForm()
+                                setShowModal(Element.character)
                             }}
                             key={c.get_uuid()}
                         />
@@ -340,10 +332,10 @@ const Home = () => {
                     {party.get_treasure().map((t) => (
                         <PartyTreasure
                             treasure={t}
-                            removeTreasure={removeTreasure}
-                            editTreasure={(e) => {
+                            removeTreasure={() => remove(t)}
+                            editTreasure={() => {
                                 setFormTreasure(t)
-                                showTreasureForm()
+                                setShowModal(Element.treasure)
                             }}
                             key={t.getUuid()}
                         />
@@ -359,10 +351,10 @@ const Home = () => {
                     {party.get_monsters().map((m) => (
                         <MonsterDefeated
                             monster={m}
-                            removeMonster={removeMonster}
-                            editMonster={(e) => {
+                            removeMonster={() => remove(m)}
+                            editMonster={() => {
                                 setFormMonster(m)
-                                showMonsterForm()
+                                setShowModal(Element.monster)
                             }}
                             key={m.getUuid()}
                         />
@@ -379,10 +371,10 @@ const Home = () => {
                         <PartyFeat
                             feat={f}
                             txp={party.get_party_txp()}
-                            removeFeat={removeFeat}
-                            editFeat={(e) => {
+                            removeFeat={() => remove(f)}
+                            editFeat={() => {
                                 setFormFeat(f)
-                                showFeatForm()
+                                setShowModal(Element.feat)
                             }}
                             key={f.getUuid()}
                         />
