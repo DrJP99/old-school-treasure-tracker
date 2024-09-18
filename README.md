@@ -1,4 +1,8 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/51ff896a-d74e-44cd-8df4-babfbf103928/deploy-status)](https://app.netlify.com/sites/old-school-treasure-tracker/deploys)
+
 # Old-School Treasure Tracker
+
+Visit at [ostt.jp-dixon.com](https://ostt.jp-dixon.com).
 
 A treasure tracker for Old-School Roleplaying Games. Designed for [Old School Essentials](https://necroticgnome.com/products/old-school-essentials-rules-tome) by Gavin Norman.
 
