@@ -67,6 +67,7 @@ const CharacterForm = ({
 
     let validate = (): boolean => {
         let error: boolean = false
+
         if (name.length === 0) {
             setIsNameError(true)
             error = true
@@ -119,9 +120,9 @@ const CharacterForm = ({
                     wageCoin,
                     share
                 )
-                resetFields()
-                returnCharacter(char)
             }
+            resetFields()
+            returnCharacter(char)
         }
     }
 
