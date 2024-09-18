@@ -363,3 +363,12 @@ ul {
         margin-bottom: 20px;
     }
 }
+
+.error-message {
+    color: $red;
+    font-size: medium;
+
+    ::before {
+        content: ' *';
+    }
+}

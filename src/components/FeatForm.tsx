@@ -21,6 +21,8 @@ const FeatForm = ({
     const [featLevel, setFeatLevel] = useState<FeatLevel>(FeatLevel.minor)
     const [description, setDescription] = useState<string>('')
 
+    const [isNameError, setIsNameError] = useState<boolean>(false)
+
     useEffect(() => {
         if (feat) {
             setName(feat.getName())
@@ -35,20 +37,44 @@ const FeatForm = ({
         setDescription('')
     }
 
+    let validate = (): boolean => {
+        let error = false
+
+        if (name.length < 1) {
+            setIsNameError(true)
+            error = true
+        } else {
+            setIsNameError(false)
+        }
+
+        return error
+    }
+
     let addFeat = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
+        let error = validate()
 
-        let newFeat = new Feat(name, featLevel, description)
-        resetFields()
-        returnFeat(newFeat)
+        if (!error) {
+            let newFeat = new Feat(name, featLevel, description)
+            resetFields()
+            returnFeat(newFeat)
+        }
     }
 
     let editFeat = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
+        let error = validate()
 
-        let newFeat = new Feat(name, featLevel, description, feat?.getUuid())
-        resetFields()
-        returnEditFeat(newFeat)
+        if (!error) {
+            let newFeat = new Feat(
+                name,
+                featLevel,
+                description,
+                feat?.getUuid()
+            )
+            resetFields()
+            returnEditFeat(newFeat)
+        }
     }
 
     let close = () => {
@@ -72,7 +98,14 @@ const FeatForm = ({
                         </option>
                     ))}
                 </select>
-                <label htmlFor="feat-name">Name</label>
+                <label htmlFor="feat-name">
+                    Name{' '}
+                    {isNameError && (
+                        <span className="error-message">
+                            invalid name, cannot be empty
+                        </span>
+                    )}
+                </label>
                 <input
                     type="text"
                     name="feat-name"

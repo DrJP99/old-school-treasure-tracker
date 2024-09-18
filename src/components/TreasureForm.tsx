@@ -35,6 +35,10 @@ const TreasureForm = ({
         Determiner.each
     )
 
+    const [isNameError, setIsNameError] = useState<boolean>(false)
+    const [isQtyError, setIsQtyError] = useState<boolean>(false)
+    const [isWorthError, setIsWorthError] = useState<boolean>(false)
+
     useEffect(() => {
         if (treasure) {
             setQty(treasure.getQty())
@@ -60,47 +64,84 @@ const TreasureForm = ({
         setWorthDeterminer(Determiner.each)
     }
 
+    let validate = (): boolean => {
+        let error = false
+
+        if (name.length === 0) {
+            setIsNameError(true)
+            error = true
+        } else {
+            setIsNameError(false)
+        }
+        if (qty < 1) {
+            setIsQtyError(true)
+            error = true
+        } else {
+            setIsQtyError(false)
+        }
+        if (worth < 0) {
+            setIsWorthError(true)
+            error = true
+        } else {
+            setIsWorthError(false)
+        }
+
+        return error
+    }
+
     let addTreasure = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
 
-        var treasure: Treasure
-        if (coinTreasure === CoinTreasure.treasure) {
-            treasure = new Treasure(
-                name,
-                description,
-                qty,
-                worth,
-                worthCoin,
-                worthDeterminer
-            )
-        } else {
-            treasure = new Coin_Treasure(qty, worthCoin)
-        }
+        let error: boolean = validate()
 
-        resetFields()
-        returnTreasure(treasure)
+        if (!error) {
+            var treasure: Treasure
+            if (coinTreasure === CoinTreasure.treasure) {
+                treasure = new Treasure(
+                    name,
+                    description,
+                    qty,
+                    worth,
+                    worthCoin,
+                    worthDeterminer
+                )
+            } else {
+                treasure = new Coin_Treasure(qty, worthCoin)
+            }
+
+            resetFields()
+            returnTreasure(treasure)
+        }
     }
 
     let editTreasure = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
 
-        var newTreasure: Treasure
-        if (coinTreasure === CoinTreasure.treasure) {
-            newTreasure = new Treasure(
-                name,
-                description,
-                qty,
-                worth,
-                worthCoin,
-                worthDeterminer,
-                treasure?.getUuid()
-            )
-        } else {
-            newTreasure = new Coin_Treasure(qty, worthCoin, treasure?.getUuid())
-        }
+        let error: boolean = validate()
 
-        resetFields()
-        returnEditTreasure(newTreasure)
+        if (!error) {
+            var newTreasure: Treasure
+            if (coinTreasure === CoinTreasure.treasure) {
+                newTreasure = new Treasure(
+                    name,
+                    description,
+                    qty,
+                    worth,
+                    worthCoin,
+                    worthDeterminer,
+                    treasure?.getUuid()
+                )
+            } else {
+                newTreasure = new Coin_Treasure(
+                    qty,
+                    worthCoin,
+                    treasure?.getUuid()
+                )
+            }
+
+            resetFields()
+            returnEditTreasure(newTreasure)
+        }
     }
 
     let close = () => {
@@ -130,7 +171,14 @@ const TreasureForm = ({
                 </select>
                 {coinTreasure === CoinTreasure.treasure ? (
                     <>
-                        <label htmlFor="treasure-name">Name</label>
+                        <label htmlFor="treasure-name">
+                            Name{' '}
+                            {isNameError && (
+                                <span className="error-message">
+                                    invalid name, cannot be empty
+                                </span>
+                            )}
+                        </label>
                         <input
                             name="name"
                             id="treasure-name"
@@ -150,7 +198,14 @@ const TreasureForm = ({
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />
-                        <label htmlFor="treasure-qty">Quantity</label>
+                        <label htmlFor="treasure-qty">
+                            Quantity{' '}
+                            {isQtyError && (
+                                <span className="error-message">
+                                    invalid quantity, must be at least 1
+                                </span>
+                            )}
+                        </label>
                         <input
                             name="qty"
                             id="treasure-qty"
@@ -159,7 +214,14 @@ const TreasureForm = ({
                             value={qty}
                             onChange={(e) => setQty(Number(e.target.value))}
                         />
-                        <label htmlFor="treasure-worth">Worth</label>
+                        <label htmlFor="treasure-worth">
+                            Worth{' '}
+                            {isWorthError && (
+                                <span className="error-message">
+                                    invalid worth, must be 0 or greater
+                                </span>
+                            )}
+                        </label>
                         <input
                             name="worth"
                             id="treasure-worth"
