@@ -67,23 +67,25 @@ const TreasureForm = ({
     let validate = (): boolean => {
         let error = false
 
-        if (name.length === 0) {
-            setIsNameError(true)
-            error = true
-        } else {
-            setIsNameError(false)
+        if (coinTreasure === CoinTreasure.treasure) {
+            if (name.length === 0) {
+                setIsNameError(true)
+                error = true
+            } else {
+                setIsNameError(false)
+            }
+            if (worth < 0) {
+                setIsWorthError(true)
+                error = true
+            } else {
+                setIsWorthError(false)
+            }
         }
         if (qty < 1) {
             setIsQtyError(true)
             error = true
         } else {
             setIsQtyError(false)
-        }
-        if (worth < 0) {
-            setIsWorthError(true)
-            error = true
-        } else {
-            setIsWorthError(false)
         }
 
         return error
@@ -93,7 +95,6 @@ const TreasureForm = ({
         e.preventDefault()
 
         let error: boolean = validate()
-
         if (!error) {
             var treasure: Treasure
             if (coinTreasure === CoinTreasure.treasure) {
