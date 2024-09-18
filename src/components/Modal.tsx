@@ -31,7 +31,7 @@ const Modal = ({ children, closeModal }: ModalProps) => {
             document.removeEventListener('keydown', handleKeydown)
             document.removeEventListener('mousedown', handleClickOutside)
         }
-    }, [])
+    }, [closeModal])
 
     return (
         <div className="modal">

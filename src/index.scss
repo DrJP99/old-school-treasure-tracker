@@ -188,18 +188,10 @@ body {
 
     &-accept {
         background-color: $green;
-
-        &:hover {
-            // background-color: $light-blue;
-        }
     }
 
     &-danger {
         background-color: $red;
-
-        &:hover {
-            // background-color: $light-red;
-        }
     }
 
     &-inline {
@@ -211,7 +203,6 @@ body {
 
         &:hover {
             text-decoration: underline;
-            // text-unde
         }
     }
 }

@@ -79,7 +79,7 @@ const MonsterForm = ({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
-                <label htmlFor="monster-description"></label>
+                <label htmlFor="monster-description">Description</label>
                 <input
                     name="description"
                     id="monster-description"
