@@ -5,6 +5,7 @@ import { Denomination } from '../service/Denomination'
 import { getEnumKeys } from '../service/EnumKeys'
 import { capitalize } from '../service/Capitalize'
 import { Character, NPC } from '../service/Character'
+import { CharacterLevelLimit } from '../service/CharacterLevelLimit'
 
 interface CharacterFormProps {
     returnCharacter: (char: Character) => void
@@ -34,6 +35,7 @@ const CharacterForm = ({
     const [isLevelError, setIsLevelError] = useState<boolean>(false)
     const [isXpError, setXpError] = useState<boolean>(false)
     const [isWageError, setIsWageError] = useState<boolean>(false)
+    const [maxLevel, setMaxLevel] = useState<number>(14)
 
     const shareRegex: RegExp = /^[1234]\/[1234]$/
 
@@ -63,6 +65,7 @@ const CharacterForm = ({
         setWage(1)
         setWageCoin(Denomination.gp)
         setShare('1/2')
+        setMaxLevel(14)
     }
 
     let validate = (): boolean => {
@@ -80,7 +83,12 @@ const CharacterForm = ({
         } else {
             setIsShareError(false)
         }
-        if (level < 1) {
+        if (
+            (level !== 0 && charClass === CharClass.normalHuman) ||
+            (level < 1 && charClass !== CharClass.normalHuman) ||
+            level > CharacterLevelLimit(charClass)
+        ) {
+            setMaxLevel(CharacterLevelLimit(charClass))
             setIsLevelError(true)
             error = true
         } else {
@@ -206,7 +214,10 @@ const CharacterForm = ({
                     Level{' '}
                     {isLevelError && (
                         <span className="error-message">
-                            invalid level, must be at least 1
+                            invalid level, {charClass} must be
+                            {charClass === CharClass.normalHuman
+                                ? ' level 0'
+                                : `between 1 and ${maxLevel}`}
                         </span>
                     )}
                 </label>
