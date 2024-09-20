@@ -17,8 +17,8 @@ const Char = ({
     return (
         <div className="character mb-20">
             <h3>
-                {character.get_name()} ({character.get_char_class()}{' '}
-                {character.get_level()}
+                {character.getName()} ({character.getCharClass()}{' '}
+                {character.getLevel()}
                 {character instanceof NPC ? (
                     <>
                         , <span className="span-npc">NPC</span>
@@ -26,21 +26,22 @@ const Char = ({
                 ) : null}
                 )
             </h3>
-            {character.get_xp_mod() !== 0 ? (
+            {character.getXpMod() !== 0 ? (
                 <p>
-                    <b>XP Modifier:</b> {character.get_xp_mod() > 0 ? '+' : ''}
-                    {character.get_xp_mod()}%
+                    <b>XP Modifier:</b> {character.getXpMod() > 0 ? '+' : ''}
+                    {character.getXpMod()}%
                 </p>
             ) : null}
             {character instanceof NPC ? (
                 <p>
-                    <b>Daily wage:</b> {character.get_wage()}
-                    {character.get_wage_coin()}, <b>Shares of treasure:</b>{' '}
-                    {character.get_share()}
+                    <b>Daily wage:</b> {character.getWage()}
+                    {character.getWageCoin()}, <b>Shares of treasure:</b>{' '}
+                    {character.getShare()}
                 </p>
             ) : (
                 <p>
-                    <b title="Total XP Needed">TXP:</b> {character.get_txp()}
+                    <b title="Total XP Needed">TXP:</b>{' '}
+                    {character.getTxp().toLocaleString()}
                 </p>
             )}
             <p>
@@ -51,36 +52,36 @@ const Char = ({
                     <b>XP:</b> +
                     {Math.round(
                         (character instanceof NPC
-                            ? party.get_xp_per_npc_share()
-                            : party.get_xp_per_pc_share()) *
-                            character.get_xp_mod_percentage()
+                            ? party.getXpPerNpcShare()
+                            : party.getXpPerPcShare()) *
+                            character.getXpModPercentage()
                     ).toLocaleString()}{' '}
                 </li>
                 <li>
                     <b>Treasure:</b>{' '}
                     {character instanceof NPC
-                        ? (
+                        ? Math.round(
                               party.getGpPerShare() *
-                              party.share_to_num(
-                                  character.get_share(),
-                                  party.get_pc_share()
-                              )
+                                  party.shareToNum(
+                                      character.getShare(),
+                                      party.getPcShare()
+                                  )
                           ).toLocaleString()
-                        : party.getGpPerPCShare().toLocaleString()}
+                        : Math.round(party.getGpPerPCShare()).toLocaleString()}
                     gp
                 </li>
             </ul>
             <p>
                 <button
                     className="btn btn-inline"
-                    onClick={(e) => editCharacter(character.get_uuid())}
+                    onClick={(e) => editCharacter(character.getUuid())}
                 >
                     Edit
                 </button>{' '}
                 |{' '}
                 <button
                     className="btn btn-inline"
-                    onClick={(e) => removeCharacter(character.get_uuid())}
+                    onClick={(e) => removeCharacter(character.getUuid())}
                 >
                     Remove
                 </button>

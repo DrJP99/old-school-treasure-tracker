@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { Char_Class } from '../service/Char_Class'
+import { CharClass } from '../service/CharClass'
 import { PC } from '../service/PC'
 import { Denomination } from '../service/Denomination'
 import { getEnumKeys } from '../service/EnumKeys'
@@ -21,7 +21,7 @@ const CharacterForm = ({
 }: CharacterFormProps) => {
     const [name, setName] = useState<string>('')
     const [level, setLevel] = useState<number>(1)
-    const [charClass, setCharClass] = useState<Char_Class>(Char_Class.cleric)
+    const [charClass, setCharClass] = useState<CharClass>(CharClass.cleric)
     const [xpMod, setXpMod] = useState<number>(0)
     const [pc, setPc] = useState<PC>(PC.pc)
 
@@ -39,15 +39,15 @@ const CharacterForm = ({
 
     useEffect(() => {
         if (character) {
-            setName(character.get_name())
-            setLevel(character.get_level())
-            setCharClass(character.get_char_class())
-            setXpMod(character.get_xp_mod())
+            setName(character.getName())
+            setLevel(character.getLevel())
+            setCharClass(character.getCharClass())
+            setXpMod(character.getXpMod())
             if (character instanceof NPC) {
                 setPc(PC.npc)
-                setWage(character.get_wage())
-                setWageCoin(character.get_wage_coin())
-                setShare(character.get_share())
+                setWage(character.getWage())
+                setWageCoin(character.getWageCoin())
+                setShare(character.getShare())
             } else {
                 setPc(PC.pc)
             }
@@ -57,7 +57,7 @@ const CharacterForm = ({
     let resetFields = () => {
         setName('')
         setLevel(1)
-        setCharClass(Char_Class.cleric)
+        setCharClass(CharClass.cleric)
         setXpMod(0)
         // setPc(PC.pc)
         setWage(1)
@@ -139,7 +139,7 @@ const CharacterForm = ({
                     charClass,
                     xpMod,
                     true,
-                    character?.get_uuid()
+                    character?.getUuid()
                 )
             } else {
                 char = new NPC(
@@ -150,7 +150,7 @@ const CharacterForm = ({
                     wage,
                     wageCoin,
                     share,
-                    character?.get_uuid()
+                    character?.getUuid()
                 )
             }
             resetFields()
@@ -222,10 +222,10 @@ const CharacterForm = ({
                 <select
                     value={charClass}
                     id="character-class"
-                    onChange={(e) => setCharClass(e.target.value as Char_Class)}
+                    onChange={(e) => setCharClass(e.target.value as CharClass)}
                 >
-                    {getEnumKeys(Char_Class).map((key, index) => (
-                        <option key={index} value={Char_Class[key]}>
+                    {getEnumKeys(CharClass).map((key, index) => (
+                        <option key={index} value={CharClass[key]}>
                             {capitalize(key)}
                         </option>
                     ))}

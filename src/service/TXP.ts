@@ -1,13 +1,13 @@
-import { Char_Class } from './Char_Class'
+import { CharClass } from './CharClass'
 
-export let get_tpx_by_class_level = (
-    char_class: Char_Class,
+export let getTpxByClassLevel = (
+    charClass: CharClass,
     level: number
 ): number => {
     let result: number = 0
 
-    // const class_cube: number[][] = [[0, 1_500, 1_500, 3_000, 12_000, 13_000, 25_000, 50_000, 100_000, 100_000,], []]
-    if (char_class === Char_Class.cleric) {
+    // const classCube: number[][] = [[0, 1_500, 1_500, 3_000, 12_000, 13_000, 25_000, 50_000, 100_000, 100_000,], []]
+    if (charClass === CharClass.cleric) {
         switch (level) {
             case 1:
                 result = 1_500
@@ -49,7 +49,7 @@ export let get_tpx_by_class_level = (
                 result = 100_000
                 break
         }
-    } else if (char_class === Char_Class.dwarf) {
+    } else if (charClass === CharClass.dwarf) {
         switch (level) {
             case 1:
                 result = 2_200
@@ -85,7 +85,7 @@ export let get_tpx_by_class_level = (
                 result = 130_000
                 break
         }
-    } else if (char_class === Char_Class.elf) {
+    } else if (charClass === CharClass.elf) {
         switch (level) {
             case 1:
                 result = 4_000
@@ -115,7 +115,7 @@ export let get_tpx_by_class_level = (
                 result = 200_000
                 break
         }
-    } else if (char_class === Char_Class.fighter) {
+    } else if (charClass === CharClass.fighter) {
         switch (level) {
             case 1:
                 result = 2_000
@@ -157,7 +157,7 @@ export let get_tpx_by_class_level = (
                 result = 120_000
                 break
         }
-    } else if (char_class === Char_Class.halfling) {
+    } else if (charClass === CharClass.halfling) {
         switch (level) {
             case 1:
                 result = 2_000
@@ -181,7 +181,7 @@ export let get_tpx_by_class_level = (
                 result = 56_000
                 break
         }
-    } else if (char_class === Char_Class.magic_user) {
+    } else if (charClass === CharClass.magicUser) {
         switch (level) {
             case 1:
                 result = 2_500
@@ -223,7 +223,7 @@ export let get_tpx_by_class_level = (
                 result = 150_000
                 break
         }
-    } else if (char_class === Char_Class.thief) {
+    } else if (charClass === CharClass.thief) {
         switch (level) {
             case 1:
                 result = 1_200

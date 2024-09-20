@@ -21,7 +21,7 @@ export class Monster {
         this.qty = qty
     }
 
-    public get_name = (): string => {
+    public getName = (): string => {
         return this.name
     }
 
@@ -29,19 +29,19 @@ export class Monster {
         return this.uuid
     }
 
-    public get_description = (): string => {
+    public getDescription = (): string => {
         return this.description
     }
 
-    public get_xp = (): number => {
+    public getXp = (): number => {
         return this.xp
     }
 
-    public get_total_xp = (): number => {
+    public getTotalXp = (): number => {
         return this.xp * this.qty
     }
 
-    public get_qty = () => {
+    public getQty = () => {
         return this.qty
     }
 }

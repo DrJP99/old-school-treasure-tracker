@@ -1,4 +1,4 @@
-import { Coin_Treasure, Treasure } from '../service/Treasure'
+import { CoinTreasure, Treasure } from '../service/Treasure'
 
 interface PartyTreasureProps {
     treasure: Treasure
@@ -13,8 +13,8 @@ const PartyTreasure = ({
 }: PartyTreasureProps) => {
     return (
         <div>
-            {treasure instanceof Coin_Treasure ? (
-                <h3>{treasure.to_string()}</h3>
+            {treasure instanceof CoinTreasure ? (
+                <h3>{treasure.toString()}</h3>
             ) : (
                 <>
                     <h3>
@@ -37,9 +37,9 @@ const PartyTreasure = ({
                         {treasure.getWorth() > 0 ? (
                             <>
                                 (worth {treasure.getWorth().toLocaleString()}
-                                {treasure.getWorth_coin()}
+                                {treasure.getWorthCoin()}
                                 {treasure.getQty() > 1 ? (
-                                    <> {treasure.getWorth_determiner()}</>
+                                    <> {treasure.getWorthDeterminer()}</>
                                 ) : (
                                     ''
                                 )}

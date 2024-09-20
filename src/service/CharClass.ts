@@ -1,10 +1,10 @@
-export enum Char_Class {
+export enum CharClass {
     cleric = 'cleric',
     dwarf = 'dwarf',
     elf = 'elf',
     fighter = 'fighter',
     halfling = 'halfling',
-    magic_user = 'Magic-User',
+    magicUser = 'Magic-User',
     thief = 'thief',
-    normal_human = 'normal human',
+    normalHuman = 'normal human',
 }

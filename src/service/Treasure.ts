@@ -13,8 +13,8 @@ export class Treasure {
     private description: string
     private qty: number
     private worth: number
-    private worth_coin: Denomination
-    private worth_determiner: Determiner
+    private worthCoin: Denomination
+    private worthDeterminer: Determiner
     private treasureType: TreasureType
 
     constructor(
@@ -22,8 +22,8 @@ export class Treasure {
         description: string,
         qty: number,
         worth: number,
-        worth_coin: string,
-        worth_determiner: string,
+        worthCoin: string,
+        worthDeterminer: string,
         uuid: string = uuidv4(),
         treasureType = TreasureType.treasure
     ) {
@@ -32,8 +32,8 @@ export class Treasure {
         this.description = description
         this.qty = qty
         this.worth = worth
-        this.worth_coin = worth_coin as Denomination
-        this.worth_determiner = worth_determiner as Determiner
+        this.worthCoin = worthCoin as Denomination
+        this.worthDeterminer = worthDeterminer as Determiner
         this.treasureType = treasureType as TreasureType
     }
 
@@ -73,59 +73,59 @@ export class Treasure {
         this.worth = worth
     }
 
-    public getWorth_coin(): Denomination {
-        return this.worth_coin
+    public getWorthCoin(): Denomination {
+        return this.worthCoin
     }
 
-    public setWorth_coin(worth_coin: Denomination): void {
-        this.worth_coin = worth_coin
+    public setWorthCoin(worthCoin: Denomination): void {
+        this.worthCoin = worthCoin
     }
 
-    public getWorth_determiner(): Determiner {
-        return this.worth_determiner
+    public getWorthDeterminer(): Determiner {
+        return this.worthDeterminer
     }
 
-    public setWorth_determiner(worth_determiner: Determiner): void {
-        this.worth_determiner = worth_determiner
+    public setWorthDeterminer(worthDeterminer: Determiner): void {
+        this.worthDeterminer = worthDeterminer
     }
 
-    to_string = (): string => {
-        return `${this.qty > 1 ? `${this.qty}x ` : ''}${this.name}${this.description.length > 0 ? `(${this.description})` : ''}${this.worth > 0 ? `, (worth ${this.worth}${this.worth_coin} ${this.worth_determiner})` : ''}`
+    toString = (): string => {
+        return `${this.qty > 1 ? `${this.qty}x ` : ''}${this.name}${this.description.length > 0 ? `(${this.description})` : ''}${this.worth > 0 ? `, (worth ${this.worth}${this.worthCoin} ${this.worthDeterminer})` : ''}`
     }
 
-    public get_xp = (): number => {
+    public getXp = (): number => {
         let xp: number = 0
-        let total_worth: number = 0
+        let totalWorth: number = 0
 
         // calculate total worth (in case of eaches)
-        if (this.worth_determiner === Determiner.total) {
-            total_worth = this.worth
-        } else if (this.worth_determiner === Determiner.each) {
-            total_worth = this.worth * this.qty
+        if (this.worthDeterminer === Determiner.total) {
+            totalWorth = this.worth
+        } else if (this.worthDeterminer === Determiner.each) {
+            totalWorth = this.worth * this.qty
         }
 
         // convert from different denominations to gp
-        switch (this.worth_coin) {
+        switch (this.worthCoin) {
             case Denomination.pp:
-                xp = total_worth * 5
+                xp = totalWorth * 5
                 break
             case Denomination.gp:
-                xp = total_worth
+                xp = totalWorth
                 break
             case Denomination.ep:
-                xp = total_worth / 2
+                xp = totalWorth / 2
                 break
             case Denomination.sp:
-                xp = total_worth / 10
+                xp = totalWorth / 10
                 break
             case Denomination.cp:
-                xp = total_worth / 100
+                xp = totalWorth / 100
         }
 
         return xp
     }
 
-    public to_gp = (n: number, c: Denomination): number => {
+    public toGp = (n: number, c: Denomination): number => {
         let worth = 0
 
         switch (c) {
@@ -149,10 +149,10 @@ export class Treasure {
     }
 }
 
-export class Coin_Treasure extends Treasure {
-    constructor(qty: number, worth_coin: string, uuid: string = uuidv4()) {
+export class CoinTreasure extends Treasure {
+    constructor(qty: number, worthCoin: string, uuid: string = uuidv4()) {
         let name = 'Gold'
-        switch (worth_coin) {
+        switch (worthCoin) {
             case 'pp':
                 name = 'Platinum'
                 break
@@ -174,20 +174,20 @@ export class Coin_Treasure extends Treasure {
             '',
             qty,
             qty,
-            worth_coin,
+            worthCoin,
             'total',
             uuid,
             TreasureType.coin
         )
     }
 
-    to_string = (): string => {
+    toString = (): string => {
         return `${this.getQty().toLocaleString()} ${this.getName()}`
     }
 }
 
-// console.log(new Treasure('gem', 'red ruby', 4, 25, 'gp', 'each').to_string())
-// console.log(new Coin_Treasure(1200, 'gp').to_string())
+// console.log(new Treasure('gem', 'red ruby', 4, 25, 'gp', 'each').toString())
+// console.log(new CoinTreasure(1200, 'gp').toString())
 // console.log(
 //     new Treasure(
 //         'sword',
@@ -196,5 +196,5 @@ export class Coin_Treasure extends Treasure {
 //         0,
 //         'gp',
 //         'each'
-//     ).to_string()
+//     ).toString()
 // )

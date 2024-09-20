@@ -1,6 +1,6 @@
 import { Party } from '../service/Party'
 import { Character, NPC } from '../service/Character'
-import { Coin_Treasure, Treasure } from '../service/Treasure'
+import { CoinTreasure, Treasure } from '../service/Treasure'
 import { Monster } from '../service/Monster'
 import Char from './Char'
 import PartyTreasure from './PartyTreasure'
@@ -21,7 +21,7 @@ const Home = () => {
         Character | NPC | undefined
     >(undefined)
     const [formTreasure, setFormTreasure] = useState<
-        Treasure | Coin_Treasure | undefined
+        Treasure | CoinTreasure | undefined
     >(undefined)
     const [formMonster, setFormMonster] = useState<Monster | undefined>(
         undefined
@@ -63,77 +63,77 @@ const Home = () => {
 
     let cloneParty = (): Party => {
         return new Party(
-            party.get_characters(),
-            party.get_treasure(),
-            party.get_monsters(),
-            party.get_feats(),
-            party.get_pc_share(),
-            party.get_num_shares(),
-            party.getXp_pc_share(),
-            party.getXp_num_shares()
+            party.getCharacters(),
+            party.getTreasure(),
+            party.getMonsters(),
+            party.getFeats(),
+            party.getPcShare(),
+            party.getNumShares(),
+            party.getXpPcShare(),
+            party.getXpNumShares()
         )
     }
 
     let add = (element: Character | Treasure | Monster | Feat) => {
-        let temp_party = cloneParty()
+        let tempParty = cloneParty()
         if (element instanceof Character) {
-            temp_party.add_character(element)
+            tempParty.addCharacter(element)
             setFormCharacter(undefined)
         } else if (element instanceof Treasure) {
-            temp_party.addTreasure(element)
+            tempParty.addTreasure(element)
             setFormTreasure(undefined)
         } else if (element instanceof Monster) {
-            temp_party.addMonster(element)
+            tempParty.addMonster(element)
             setFormMonster(undefined)
         } else if (element instanceof Feat) {
-            temp_party.addFeat(element)
+            tempParty.addFeat(element)
             setFormFeat(undefined)
         } else {
             console.error(`${element} is not permitted!`)
         }
-        setParty(temp_party)
+        setParty(tempParty)
         closeModal()
     }
 
     let edit = (element: Character | Treasure | Monster | Feat) => {
-        let temp_party = cloneParty()
+        let tempParty = cloneParty()
         if (element instanceof Character) {
-            temp_party.editCharacter(element)
+            tempParty.editCharacter(element)
             setFormCharacter(undefined)
         } else if (element instanceof Treasure) {
-            temp_party.editTreasure(element)
+            tempParty.editTreasure(element)
             setFormTreasure(undefined)
         } else if (element instanceof Monster) {
-            temp_party.editMonster(element)
+            tempParty.editMonster(element)
             setFormMonster(undefined)
         } else if (element instanceof Feat) {
-            temp_party.editFeat(element)
+            tempParty.editFeat(element)
             setFormFeat(undefined)
         } else {
             console.error(`${element} is not permitted!`)
         }
-        setParty(temp_party)
+        setParty(tempParty)
         closeModal()
     }
 
     let remove = (element: Character | Treasure | Monster | Feat) => {
-        let temp_party = cloneParty()
+        let tempParty = cloneParty()
         if (element instanceof Character) {
-            temp_party.remove_character_by_uuid(element.get_uuid())
+            tempParty.removeCharacterByUuid(element.getUuid())
             setFormCharacter(undefined)
         } else if (element instanceof Treasure) {
-            temp_party.removeTreasure(element.getUuid())
+            tempParty.removeTreasure(element.getUuid())
             setFormTreasure(undefined)
         } else if (element instanceof Monster) {
-            temp_party.removeMonster(element.getUuid())
+            tempParty.removeMonster(element.getUuid())
             setFormMonster(undefined)
         } else if (element instanceof Feat) {
-            temp_party.removeFeat(element.getUuid())
+            tempParty.removeFeat(element.getUuid())
             setFormFeat(undefined)
         } else {
             console.error(`${element} is not permitted!`)
         }
-        setParty(temp_party)
+        setParty(tempParty)
         closeModal()
     }
 
@@ -144,9 +144,9 @@ const Home = () => {
     let loadParty = (): void => {
         let myParty = JSON.parse(window.localStorage.getItem('party') || '""')
 
-        let temp_party = new Party()
-        temp_party.JSONparse(myParty)
-        setParty(temp_party)
+        let tempParty = new Party()
+        tempParty.JSONparse(myParty)
+        setParty(tempParty)
         setLoaded(true)
     }
 
@@ -248,24 +248,24 @@ const Home = () => {
                 </Modal>
             )}
 
-            {party.get_characters().length > 0 ? (
+            {party.getCharacters().length > 0 ? (
                 <>
                     <h2>
                         Total XP:{' '}
                         {(
-                            party.get_total_xp() + party.get_feat_xp()
+                            party.getTotalXp() + party.getFeatXp()
                         ).toLocaleString()}
                     </h2>
                     {party.getNumPC() > 0 ? (
                         <>
                             <p>
                                 <b>Party TXP:</b>{' '}
-                                {party.get_party_txp().toLocaleString()}
+                                {party.getPartyTxp().toLocaleString()}
                             </p>
                             <p>
                                 <b>Each PC gains:</b>{' '}
                                 {Math.round(
-                                    party.get_xp_per_pc_share()
+                                    party.getXpPerPcShare()
                                 ).toLocaleString()}{' '}
                                 XP, {party.getGpPerPCShare().toLocaleString()}gp
                             </p>
@@ -276,7 +276,7 @@ const Home = () => {
                             <p>
                                 <b>Each NPC gains:</b>{' '}
                                 {Math.round(
-                                    party.get_xp_per_npc_share()
+                                    party.getXpPerNpcShare()
                                 ).toLocaleString()}{' '}
                                 XP
                             </p>
@@ -306,10 +306,10 @@ const Home = () => {
                 </>
             ) : null}
 
-            {party.get_characters().length > 0 ? (
+            {party.getCharacters().length > 0 ? (
                 <div>
                     <h2>Characters:</h2>
-                    {party.get_characters().map((c) => (
+                    {party.getCharacters().map((c) => (
                         <Char
                             character={c}
                             party={party}
@@ -318,18 +318,18 @@ const Home = () => {
                                 setFormCharacter(c)
                                 setShowModal(Element.character)
                             }}
-                            key={c.get_uuid()}
+                            key={c.getUuid()}
                         />
                     ))}
                 </div>
             ) : null}
-            {party.get_treasure().length > 0 ? (
+            {party.getTreasure().length > 0 ? (
                 <div>
                     <h2>
                         Treasure found: (
-                        {party.get_treasure_xp().toLocaleString()} XP)
+                        {party.getTreasureXp().toLocaleString()} XP)
                     </h2>
-                    {party.get_treasure().map((t) => (
+                    {party.getTreasure().map((t) => (
                         <PartyTreasure
                             treasure={t}
                             removeTreasure={() => remove(t)}
@@ -342,13 +342,13 @@ const Home = () => {
                     ))}
                 </div>
             ) : null}
-            {party.get_monsters().length > 0 ? (
+            {party.getMonsters().length > 0 ? (
                 <div>
                     <h2>
                         Monsters defeated: (
-                        {party.get_monster_xp().toLocaleString()} XP)
+                        {party.getMonsterXp().toLocaleString()} XP)
                     </h2>
-                    {party.get_monsters().map((m) => (
+                    {party.getMonsters().map((m) => (
                         <MonsterDefeated
                             monster={m}
                             removeMonster={() => remove(m)}
@@ -361,16 +361,16 @@ const Home = () => {
                     ))}
                 </div>
             ) : null}
-            {party.get_feats().length > 0 ? (
+            {party.getFeats().length > 0 ? (
                 <div>
                     <h2>
                         Feats of Exploration (
-                        {party.get_feat_xp().toLocaleString()} XP)
+                        {party.getFeatXp().toLocaleString()} XP)
                     </h2>
-                    {party.get_feats().map((f) => (
+                    {party.getFeats().map((f) => (
                         <PartyFeat
                             feat={f}
-                            txp={party.get_party_txp()}
+                            txp={party.getPartyTxp()}
                             removeFeat={() => remove(f)}
                             editFeat={() => {
                                 setFormFeat(f)
