@@ -259,7 +259,7 @@ export class Party {
         let total = 0
 
         for (let c of this.characters) {
-            total += c instanceof NPC ? this.xp_pc_share : this.xp_pc_share / 2
+            total += !(c instanceof NPC) ? this.xp_pc_share : this.xp_pc_share / 2
         }
 
         return total
@@ -295,6 +295,7 @@ export class Party {
         )
 
         this.num_shares = this.calculateShares()
+        this.num_shares = this.calculateXPShares()
         this.party_txp = this.calculatePartyTXP()
     }
 
