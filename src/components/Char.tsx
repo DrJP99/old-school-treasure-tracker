@@ -40,7 +40,8 @@ const Char = ({
                 </p>
             ) : (
                 <p>
-                    <b title="Total XP Needed">TXP:</b> {character.getTxp()}
+                    <b title="Total XP Needed">TXP:</b>{' '}
+                    {character.getTxp().toLocaleString()}
                 </p>
             )}
             <p>
