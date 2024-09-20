@@ -33,4 +33,10 @@ export enum CharClass {
     // Carcass Crawler #2
     phase_elf = 'Phase Elf',
     wood_elf = 'Wood Elf',
+    // Carcass Crawler #3
+    beast_master = 'Beast Master',
+    dragonborn = 'dragonborn',
+    mutoid = 'mutoid',
+    mycelian = 'mycelian',
+    tiefling = 'tiefling',
 }
