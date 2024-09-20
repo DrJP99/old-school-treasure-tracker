@@ -60,14 +60,14 @@ const Char = ({
                 <li>
                     <b>Treasure:</b>{' '}
                     {character instanceof NPC
-                        ? (
+                        ? Math.round(
                               party.getGpPerShare() *
-                              party.shareToNum(
-                                  character.getShare(),
-                                  party.getPcShare()
-                              )
+                                  party.shareToNum(
+                                      character.getShare(),
+                                      party.getPcShare()
+                                  )
                           ).toLocaleString()
-                        : party.getGpPerPCShare().toLocaleString()}
+                        : Math.round(party.getGpPerPCShare()).toLocaleString()}
                     gp
                 </li>
             </ul>

@@ -316,7 +316,7 @@ export class Party {
     }
 
     public getGpPerShare = (): number => {
-        return Math.round(this.getTreasureXp() / this.numShares)
+        return this.getTreasureXp() / this.numShares
     }
 
     public getGpPerPCShare = (): number => {
