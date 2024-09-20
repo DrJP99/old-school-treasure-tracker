@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { Coin_Treasure, Treasure } from '../service/Treasure'
+import { CoinTreasure, Treasure } from '../service/Treasure'
 import { Determiner } from '../service/Determiner'
 import { Denomination } from '../service/Denomination'
 import { getEnumKeys } from '../service/EnumKeys'
@@ -9,10 +9,10 @@ interface TreasureFormProps {
     returnTreasure: (treasure: Treasure) => void
     returnEditTreasure: (treasure: Treasure) => void
     closeForm: () => void
-    treasure: Treasure | Coin_Treasure | undefined
+    treasure: Treasure | CoinTreasure | undefined
 }
 
-enum CoinTreasure {
+enum CoinOrTreasure {
     treasure = 'treasure',
     coins = 'coins',
 }
@@ -26,8 +26,8 @@ const TreasureForm = ({
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [qty, setQty] = useState(1)
-    const [coinTreasure, setCoinTreasure] = useState<CoinTreasure>(
-        CoinTreasure.treasure
+    const [coinTreasure, setCoinTreasure] = useState<CoinOrTreasure>(
+        CoinOrTreasure.treasure
     )
     const [worth, setWorth] = useState(0)
     const [worthCoin, setWorthCoin] = useState<Denomination>(Denomination.gp)
@@ -42,15 +42,15 @@ const TreasureForm = ({
     useEffect(() => {
         if (treasure) {
             setQty(treasure.getQty())
-            setWorthCoin(treasure.getWorth_coin())
-            if (!(treasure instanceof Coin_Treasure)) {
-                setCoinTreasure(CoinTreasure.treasure)
+            setWorthCoin(treasure.getWorthCoin())
+            if (!(treasure instanceof CoinTreasure)) {
+                setCoinTreasure(CoinOrTreasure.treasure)
                 setName(treasure.getName())
                 setDescription(treasure.getDescription())
                 setWorth(treasure.getWorth())
-                setWorthDeterminer(treasure.getWorth_determiner())
+                setWorthDeterminer(treasure.getWorthDeterminer())
             } else {
-                setCoinTreasure(CoinTreasure.coins)
+                setCoinTreasure(CoinOrTreasure.coins)
             }
         }
     }, [treasure])
@@ -67,7 +67,7 @@ const TreasureForm = ({
     let validate = (): boolean => {
         let error = false
 
-        if (coinTreasure === CoinTreasure.treasure) {
+        if (coinTreasure === CoinOrTreasure.treasure) {
             if (name.length === 0) {
                 setIsNameError(true)
                 error = true
@@ -97,7 +97,7 @@ const TreasureForm = ({
         let error: boolean = validate()
         if (!error) {
             var treasure: Treasure
-            if (coinTreasure === CoinTreasure.treasure) {
+            if (coinTreasure === CoinOrTreasure.treasure) {
                 treasure = new Treasure(
                     name,
                     description,
@@ -107,7 +107,7 @@ const TreasureForm = ({
                     worthDeterminer
                 )
             } else {
-                treasure = new Coin_Treasure(qty, worthCoin)
+                treasure = new CoinTreasure(qty, worthCoin)
             }
 
             resetFields()
@@ -122,7 +122,7 @@ const TreasureForm = ({
 
         if (!error) {
             var newTreasure: Treasure
-            if (coinTreasure === CoinTreasure.treasure) {
+            if (coinTreasure === CoinOrTreasure.treasure) {
                 newTreasure = new Treasure(
                     name,
                     description,
@@ -133,7 +133,7 @@ const TreasureForm = ({
                     treasure?.getUuid()
                 )
             } else {
-                newTreasure = new Coin_Treasure(
+                newTreasure = new CoinTreasure(
                     qty,
                     worthCoin,
                     treasure?.getUuid()
@@ -161,16 +161,16 @@ const TreasureForm = ({
                     value={coinTreasure}
                     onChange={(e) => {
                         resetFields()
-                        setCoinTreasure(e.target.value as CoinTreasure)
+                        setCoinTreasure(e.target.value as CoinOrTreasure)
                     }}
                 >
-                    {getEnumKeys(CoinTreasure).map((key, index) => (
-                        <option key={index} value={CoinTreasure[key]}>
+                    {getEnumKeys(CoinOrTreasure).map((key, index) => (
+                        <option key={index} value={CoinOrTreasure[key]}>
                             {capitalize(key)}
                         </option>
                     ))}
                 </select>
-                {coinTreasure === CoinTreasure.treasure ? (
+                {coinTreasure === CoinOrTreasure.treasure ? (
                     <>
                         <label htmlFor="treasure-name">
                             Name{' '}

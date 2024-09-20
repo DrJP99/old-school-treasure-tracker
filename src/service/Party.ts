@@ -2,7 +2,7 @@
 import { Character, NPC } from './Character'
 import { Feat } from './Feat'
 import { Monster } from './Monster'
-import { Coin_Treasure, Treasure } from './Treasure'
+import { CoinTreasure, Treasure } from './Treasure'
 
 interface StringArray {
     [index: string]: number
@@ -13,47 +13,47 @@ export class Party {
     private treasure: Array<Treasure>
     private monsters: Array<Monster>
     private feats: Array<Feat>
-    private party_txp: number
-    private pc_share: number // shares of treasure
-    private num_shares: number // number of treasure shares
-    private xp_pc_share: number // shares of XP per PC
-    private xp_num_shares: number // number of XP shares
+    private partyTxp: number
+    private pcShare: number // shares of treasure
+    private numShares: number // number of treasure shares
+    private xpPcShare: number // shares of XP per PC
+    private xpNumShares: number // number of XP shares
 
     constructor(
         characters: Array<Character> = [],
         treasure: Array<Treasure> = [],
         monsters: Array<Monster> = [],
         feats: Array<Feat> = [],
-        pc_share: number = 12,
-        num_shares: number = 0,
-        xp_pc_share: number = 2,
-        xp_num_shares: number = 0
+        pcShare: number = 12,
+        numShares: number = 0,
+        xpPcShare: number = 2,
+        xpNumShares: number = 0
     ) {
         this.characters = characters
         this.treasure = treasure
         this.monsters = monsters
         this.feats = feats
-        this.party_txp = this.calculatePartyTXP()
-        this.pc_share = pc_share
-        this.num_shares = this.calculateShares()
-        this.xp_pc_share = xp_pc_share
-        this.xp_num_shares = this.calculateXPShares()
+        this.partyTxp = this.calculatePartyTXP()
+        this.pcShare = pcShare
+        this.numShares = this.calculateShares()
+        this.xpPcShare = xpPcShare
+        this.xpNumShares = this.calculateXPShares()
     }
 
-    add_character = (character: Character | NPC) => {
+    addCharacter = (character: Character | NPC) => {
         this.characters = this.characters.concat(character)
-        if (character.get_pc()) {
+        if (character.getPc()) {
             // if character is PC, add tpx to party's total
-            this.party_txp += character.get_txp()
-            this.num_shares += this.pc_share
-            this.xp_num_shares += this.xp_pc_share
-        } else if (!character.get_pc() && character instanceof NPC) {
+            this.partyTxp += character.getTxp()
+            this.numShares += this.pcShare
+            this.xpNumShares += this.xpPcShare
+        } else if (!character.getPc() && character instanceof NPC) {
             // if character is NPC, don't add tpx, add fractional share
-            this.num_shares += this.share_to_num(
-                character.get_share(),
-                this.pc_share
+            this.numShares += this.shareToNum(
+                character.getShare(),
+                this.pcShare
             )
-            this.xp_num_shares += this.xp_pc_share / 2
+            this.xpNumShares += this.xpPcShare / 2
         }
     }
 
@@ -69,153 +69,151 @@ export class Party {
         this.feats = this.feats.concat(feat)
     }
 
-    public share_to_num = (share: string, common: number) => {
+    public shareToNum = (share: string, common: number) => {
         let numerator: number = Number(share[0])
         let denominator = Number(share[2])
         return (numerator / denominator) * common
     }
 
-    remove_character_by_uuid = (uuid: string) => {
+    removeCharacterByUuid = (uuid: string) => {
         this.characters = this.characters.filter((char, i) => {
-            if (char.get_uuid() === uuid) {
+            if (char.getUuid() === uuid) {
                 if (char instanceof NPC) {
                     // if NPC
-                    this.num_shares -= this.share_to_num(
-                        char.get_share(),
-                        this.pc_share
+                    this.numShares -= this.shareToNum(
+                        char.getShare(),
+                        this.pcShare
                     )
-                    this.xp_num_shares -= this.xp_pc_share / 2
+                    this.xpNumShares -= this.xpPcShare / 2
                 } else {
                     // if PC
-                    this.party_txp -= char.get_txp()
-                    this.num_shares -= this.pc_share
-                    this.xp_num_shares -= this.xp_pc_share
+                    this.partyTxp -= char.getTxp()
+                    this.numShares -= this.pcShare
+                    this.xpNumShares -= this.xpPcShare
                 }
             }
             // Return characters who do not have the indicated uuid
-            return char.get_uuid() !== uuid
+            return char.getUuid() !== uuid
         })
     }
 
-    print_characters = () => {
+    printCharacters = () => {
         console.log('Characters in Party:')
         for (let character of this.characters) {
-            console.log(`- ${character.get_name()}`)
+            console.log(`- ${character.getName()}`)
         }
     }
 
-    public get_treasure_xp = (): number => {
+    public getTreasureXp = (): number => {
         let xp: number = 0
 
         // sum the total xp recovered from treasure
         for (let t of this.treasure) {
-            xp += t.get_xp()
+            xp += t.getXp()
         }
 
         return xp
     }
 
-    public get_monster_xp = (): number => {
+    public getMonsterXp = (): number => {
         let xp: number = 0
 
         // sum the total xp from defeating monsters
         for (let m of this.monsters) {
-            xp += m.get_total_xp()
+            xp += m.getTotalXp()
         }
 
         return xp
     }
 
-    public get_feat_xp = (): number => {
+    public getFeatXp = (): number => {
         let xp: number = 0
 
         for (let f of this.feats) {
-            xp += f.getXP(this.party_txp)
+            xp += f.getXP(this.partyTxp)
         }
 
         return xp
     }
 
-    public get_total_xp = (): number => {
+    public getTotalXp = (): number => {
         let xp: number = 0
 
-        xp += this.get_monster_xp()
-        xp += this.get_treasure_xp()
+        xp += this.getMonsterXp()
+        xp += this.getTreasureXp()
         // feat xp is excluded, as NPCs don't receive xp from feats of exploration
-        // xp += this.get_feat_xp()
+        // xp += this.getFeatXp()
 
         return xp
     }
 
-    public get_xp_per_share = (): number => {
-        return this.xp_num_shares !== 0
-            ? this.get_total_xp() / this.xp_num_shares
-            : 0
+    public getXpPerShare = (): number => {
+        return this.xpNumShares !== 0 ? this.getTotalXp() / this.xpNumShares : 0
     }
 
-    public get_xp_per_pc_share = (): number => {
+    public getXpPerPcShare = (): number => {
         // Include Feat xp PC's share
         return (
-            this.get_xp_per_share() * this.xp_pc_share +
-            this.get_feat_xp() / this.getNumPC()
+            this.getXpPerShare() * this.xpPcShare +
+            this.getFeatXp() / this.getNumPC()
         )
     }
 
-    public get_xp_per_npc_share = (): number => {
+    public getXpPerNpcShare = (): number => {
         // NPCs don't receive xp from feats of exploration
-        return this.get_xp_per_share() * (this.xp_pc_share / 2)
+        return this.getXpPerShare() * (this.xpPcShare / 2)
     }
 
-    public get_characters = (): Character[] => {
+    public getCharacters = (): Character[] => {
         return this.characters
     }
 
-    public get_pcs = (): Character[] => {
+    public getPcs = (): Character[] => {
         return this.characters.filter((c) => !(c instanceof NPC))
     }
 
-    public get_npcs = (): Character[] => {
+    public getNpcs = (): Character[] => {
         return this.characters.filter((c) => c instanceof NPC)
     }
 
-    public get_treasure = (): Treasure[] => {
+    public getTreasure = (): Treasure[] => {
         return this.treasure
     }
 
-    public get_monsters = (): Monster[] => {
+    public getMonsters = (): Monster[] => {
         return this.monsters
     }
 
-    public get_feats = (): Feat[] => {
+    public getFeats = (): Feat[] => {
         return this.feats
     }
 
-    public get_party_txp = (): number => {
-        return this.party_txp
+    public getPartyTxp = (): number => {
+        return this.partyTxp
     }
 
-    public get_pc_share = (): number => {
-        return this.pc_share
+    public getPcShare = (): number => {
+        return this.pcShare
     }
 
-    public get_num_shares = (): number => {
-        return this.num_shares
+    public getNumShares = (): number => {
+        return this.numShares
     }
 
-    public getXp_pc_share(): number {
-        return this.xp_pc_share
+    public getXpPcShare(): number {
+        return this.xpPcShare
     }
 
-    public setXp_pc_share(xp_pc_share: number): void {
-        this.xp_pc_share = xp_pc_share
+    public setXpPcShare(xpPcShare: number): void {
+        this.xpPcShare = xpPcShare
     }
 
-    public getXp_num_shares(): number {
-        return this.xp_num_shares
+    public getXpNumShares(): number {
+        return this.xpNumShares
     }
 
-    public setXp_num_shares(xp_num_shares: number): void {
-        this.xp_num_shares = xp_num_shares
+    public setXpNumShares(xpNumShares: number): void {
+        this.xpNumShares = xpNumShares
     }
 
     public getNumNPC = (): number => {
@@ -235,7 +233,7 @@ export class Party {
 
         for (let c of this.characters) {
             if (!(c instanceof NPC)) {
-                total += c.get_txp()
+                total += c.getTxp()
             }
         }
 
@@ -248,8 +246,8 @@ export class Party {
         for (let c of this.characters) {
             total +=
                 c instanceof NPC
-                    ? this.share_to_num(c.get_share(), this.pc_share)
-                    : this.pc_share
+                    ? this.shareToNum(c.getShare(), this.pcShare)
+                    : this.pcShare
         }
 
         return total
@@ -259,7 +257,7 @@ export class Party {
         let total = 0
 
         for (let c of this.characters) {
-            total += !(c instanceof NPC) ? this.xp_pc_share : this.xp_pc_share / 2
+            total += !(c instanceof NPC) ? this.xpPcShare : this.xpPcShare / 2
         }
 
         return total
@@ -291,12 +289,12 @@ export class Party {
 
     public editCharacter = (character: Character) => {
         this.characters = this.characters.map((c) =>
-            c.get_uuid() === character.get_uuid() ? character : c
+            c.getUuid() === character.getUuid() ? character : c
         )
 
-        this.num_shares = this.calculateShares()
-        this.num_shares = this.calculateXPShares()
-        this.party_txp = this.calculatePartyTXP()
+        this.numShares = this.calculateShares()
+        this.numShares = this.calculateXPShares()
+        this.partyTxp = this.calculatePartyTXP()
     }
 
     public editTreasure = (treasure: Treasure): void => {
@@ -318,11 +316,11 @@ export class Party {
     }
 
     public getGpPerShare = (): number => {
-        return Math.round(this.get_treasure_xp() / this.num_shares)
+        return Math.round(this.getTreasureXp() / this.numShares)
     }
 
     public getGpPerPCShare = (): number => {
-        return this.getGpPerShare() * this.pc_share
+        return this.getGpPerShare() * this.pcShare
     }
 
     public getGpPerFractionalShare = (): StringArray => {
@@ -330,10 +328,10 @@ export class Party {
 
         for (let c of this.characters) {
             if (c instanceof NPC) {
-                if (!(c.get_share() in myObject)) {
-                    myObject[c.get_share()] =
+                if (!(c.getShare() in myObject)) {
+                    myObject[c.getShare()] =
                         this.getGpPerShare() *
-                        this.share_to_num(c.get_share(), this.pc_share)
+                        this.shareToNum(c.getShare(), this.pcShare)
                 }
             }
         }
@@ -344,25 +342,25 @@ export class Party {
     public JSONparse = (json: any): void => {
         json['characters']?.forEach((c: any) => {
             if (c['pc']) {
-                this.add_character(
+                this.addCharacter(
                     new Character(
                         c['name'],
                         c['level'],
-                        c['char_class'],
-                        c['xp_mod'],
+                        c['charClass'],
+                        c['xpMod'],
                         c['pc'],
                         c['uuid']
                     )
                 )
             } else {
-                this.add_character(
+                this.addCharacter(
                     new NPC(
                         c['name'],
                         c['level'],
-                        c['char_class'],
-                        c['xp_mod'],
+                        c['charClass'],
+                        c['xpMod'],
                         c['wage'],
-                        c['wage_coin'],
+                        c['wageCoin'],
                         c['share'],
                         c['uuid']
                     )
@@ -396,14 +394,14 @@ export class Party {
                         t['description'],
                         t['qty'],
                         t['worth'],
-                        t['worth_coin'],
-                        t['worth_determiner'],
+                        t['worthCoin'],
+                        t['worthDeterminer'],
                         t['uuid']
                     )
                 )
             } else {
                 this.addTreasure(
-                    new Coin_Treasure(t['qty'], t['worth_coin'], t['uuid'])
+                    new CoinTreasure(t['qty'], t['worthCoin'], t['uuid'])
                 )
             }
         })
@@ -416,29 +414,29 @@ export class Party {
     }
 }
 
-// let my_party: Party = new Party()
+// let myParty: Party = new Party()
 
-// my_party.add_character(new Character('John', 3, 'fighter', 0))
-// my_party.add_character(new Character('Josie', 2, 'cleric', 0))
-// my_party.add_character(new NPC('Valenti', 1, 'fighter', 0, 1, 'gp', '1/2'))
+// myParty.addCharacter(new Character('John', 3, 'fighter', 0))
+// myParty.addCharacter(new Character('Josie', 2, 'cleric', 0))
+// myParty.addCharacter(new NPC('Valenti', 1, 'fighter', 0, 1, 'gp', '1/2'))
 
-// my_party.print_characters()
+// myParty.printCharacters()
 // console.log(
-//     `Party tpx: ${my_party.party_txp}; number of shares: ${my_party.num_shares}/${my_party.pc_share}`
+//     `Party tpx: ${myParty.partyTxp}; number of shares: ${myParty.numShares}/${myParty.pcShare}`
 // )
 // console.log('\n')
 
-// my_party.add_character(new Character('Quackdalf', 5, 'magic-user', 0))
+// myParty.addCharacter(new Character('Quackdalf', 5, 'magic-user', 0))
 
-// my_party.print_characters()
+// myParty.printCharacters()
 // console.log(
-//     `Party tpx: ${my_party.party_txp}; number of shares: ${my_party.num_shares}/${my_party.pc_share}`
+//     `Party tpx: ${myParty.partyTxp}; number of shares: ${myParty.numShares}/${myParty.pcShare}`
 // )
 // console.log('\n')
 
-// my_party.remove_character_by_name('John')
+// myParty.removeCharacterByName('John')
 
-// my_party.print_characters()
+// myParty.printCharacters()
 // console.log(
-//     `Party tpx: ${my_party.party_txp}; number of shares: ${my_party.num_shares}/${my_party.pc_share}`
+//     `Party tpx: ${myParty.partyTxp}; number of shares: ${myParty.numShares}/${myParty.pcShare}`
 // )

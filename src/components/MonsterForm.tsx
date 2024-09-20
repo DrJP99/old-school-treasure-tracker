@@ -25,10 +25,10 @@ const MonsterForm = ({
 
     useEffect(() => {
         if (monster) {
-            setName(monster.get_name())
-            setDescription(monster.get_description())
-            setXp(monster.get_xp())
-            setQty(monster.get_qty())
+            setName(monster.getName())
+            setDescription(monster.getDescription())
+            setXp(monster.getXp())
+            setQty(monster.getQty())
         }
     }, [monster])
 

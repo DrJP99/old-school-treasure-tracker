@@ -14,17 +14,17 @@ const MonsterDefeated = ({
     return (
         <div>
             <h3>
-                {monster.get_qty().toLocaleString()} {monster.get_name()}
+                {monster.getQty().toLocaleString()} {monster.getName()}
             </h3>
             <p>
-                {monster.get_description().length > 0 ? (
-                    <>{monster.get_description()}. </>
+                {monster.getDescription().length > 0 ? (
+                    <>{monster.getDescription()}. </>
                 ) : (
                     ''
                 )}
-                <b>XP</b>: {monster.get_xp().toLocaleString()}{' '}
-                {monster.get_qty() > 1 ? (
-                    <>each ({monster.get_total_xp().toLocaleString()} total)</>
+                <b>XP</b>: {monster.getXp().toLocaleString()}{' '}
+                {monster.getQty() > 1 ? (
+                    <>each ({monster.getTotalXp().toLocaleString()} total)</>
                 ) : (
                     ''
                 )}
