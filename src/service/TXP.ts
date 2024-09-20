@@ -190,7 +190,8 @@ export let getTpxByClassLevel = (
         }
     } else if (
         charClass === CharClass.magicUser ||
-        charClass === CharClass.illusionist
+        charClass === CharClass.illusionist ||
+        charClass === CharClass.phase_elf
     ) {
         switch (level) {
             case 1:
@@ -768,6 +769,36 @@ export let getTpxByClassLevel = (
                 break
             case 13:
                 result = 160_000
+                break
+        }
+    } else if (charClass === CharClass.wood_elf) {
+        switch (level) {
+            case 1:
+                result = 3_000
+                break
+            case 2:
+                result = 3_000
+                break
+            case 3:
+                result = 6_000
+                break
+            case 4:
+                result = 12_000
+                break
+            case 5:
+                result = 24_000
+                break
+            case 6:
+                result = 52_000
+                break
+            case 7:
+                result = 100_000
+                break
+            case 8:
+                result = 150_000
+                break
+            case 9:
+                result = 150_000
                 break
         }
     }

@@ -30,4 +30,7 @@ export enum CharClass {
     hephaestan = 'hephaestan',
     kineticist = 'kineticist',
     mage = 'mage',
+    // Carcass Crawler #2
+    phase_elf = 'Phase Elf',
+    wood_elf = 'Wood Elf',
 }
