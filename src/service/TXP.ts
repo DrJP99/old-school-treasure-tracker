@@ -7,7 +7,7 @@ export let getTpxByClassLevel = (
     let result: number = 0
 
     // const classCube: number[][] = [[0, 1_500, 1_500, 3_000, 12_000, 13_000, 25_000, 50_000, 100_000, 100_000,], []]
-    if (charClass === CharClass.cleric) {
+    if (charClass === CharClass.cleric || charClass === CharClass.acolyte) {
         switch (level) {
             case 1:
                 result = 1_500
@@ -117,7 +117,8 @@ export let getTpxByClassLevel = (
         }
     } else if (
         charClass === CharClass.fighter ||
-        charClass === CharClass.bard
+        charClass === CharClass.bard ||
+        charClass === CharClass.kineticist
     ) {
         switch (level) {
             case 1:
@@ -160,7 +161,10 @@ export let getTpxByClassLevel = (
                 result = 120_000
                 break
         }
-    } else if (charClass === CharClass.halfling) {
+    } else if (
+        charClass === CharClass.halfling ||
+        charClass === CharClass.goblin
+    ) {
         switch (level) {
             case 1:
                 result = 2_000
@@ -664,7 +668,108 @@ export let getTpxByClassLevel = (
                 result = 80_000
                 break
         }
+    } else if (charClass === CharClass.gargantua) {
+        switch (level) {
+            case 1:
+                result = 2_500
+                break
+            case 2:
+                result = 2_500
+                break
+            case 3:
+                result = 5_000
+                break
+            case 4:
+                result = 10_000
+                break
+            case 5:
+                result = 20_000
+                break
+            case 6:
+                result = 40_000
+                break
+            case 7:
+                result = 80_000
+                break
+            case 8:
+                result = 140_000
+                break
+            case 9:
+                result = 200_000
+                break
+        }
+    } else if (charClass === CharClass.hephaestan) {
+        switch (level) {
+            case 1:
+                result = 3_000
+                break
+            case 2:
+                result = 3_000
+                break
+            case 3:
+                result = 6_000
+                break
+            case 4:
+                result = 13_000
+                break
+            case 5:
+                result = 25_000
+                break
+            case 6:
+                result = 50_000
+                break
+            case 7:
+                result = 100_000
+                break
+            case 8:
+                result = 100_000
+                break
+            case 9:
+                result = 100_000
+                break
+        }
+    } else if (charClass === CharClass.mage) {
+        switch (level) {
+            case 1:
+                result = 2_800
+                break
+            case 2:
+                result = 2_800
+                break
+            case 3:
+                result = 6_400
+                break
+            case 4:
+                result = 12_000
+                break
+            case 5:
+                result = 24_000
+                break
+            case 6:
+                result = 52_000
+                break
+            case 7:
+                result = 100_000
+                break
+            case 8:
+                result = 200_000
+                break
+            case 9:
+                result = 160_000
+                break
+            case 10:
+                result = 160_000
+                break
+            case 11:
+                result = 160_000
+                break
+            case 12:
+                result = 160_000
+                break
+            case 13:
+                result = 160_000
+                break
+        }
     }
-
     return result
 }
