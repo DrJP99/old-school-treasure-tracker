@@ -23,6 +23,11 @@ export enum CharClass {
     paladin = 'Paladin',
     ranger = 'Ranger',
     svirfneblin = 'Svirfneblin',
+    //Carcass Crawler #0,
+    arcane_bard = 'Arcane Bard',
+    changeling = 'Changeling',
+    chaos_knight = 'Chaos Knight',
+    warden = 'Warden',
     // Carcass Crawler #1
     acolyte = 'Acolyte',
     gargantua = 'Gargantua',

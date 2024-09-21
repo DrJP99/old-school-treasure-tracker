@@ -119,8 +119,10 @@ export let getTpxByClassLevel = (
         charClass === CharClass.fighter ||
         charClass === CharClass.halfling ||
         charClass === CharClass.bard ||
+        charClass === CharClass.arcane_bard ||
         charClass === CharClass.goblin ||
-        charClass === CharClass.kineticist
+        charClass === CharClass.kineticist ||
+        charClass === CharClass.warden
     ) {
         switch (level) {
             case 1:
@@ -557,7 +559,10 @@ export let getTpxByClassLevel = (
                 result = 130_000
                 break
         }
-    } else if (charClass === CharClass.paladin) {
+    } else if (
+        charClass === CharClass.paladin ||
+        charClass === CharClass.chaos_knight
+    ) {
         switch (level) {
             case 1:
                 result = 2_750
@@ -854,7 +859,10 @@ export let getTpxByClassLevel = (
                 result = 60_000
                 break
         }
-    } else if (charClass === CharClass.tiefling) {
+    } else if (
+        charClass === CharClass.tiefling ||
+        charClass === CharClass.changeling
+    ) {
         switch (level) {
             case 1:
                 result = 2_500

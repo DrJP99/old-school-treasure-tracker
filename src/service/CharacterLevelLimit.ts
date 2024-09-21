@@ -18,6 +18,7 @@ export const CharacterLevelLimit = (charClass: CharClass): number => {
         case CharClass.svirfneblin:
             limit = 8
             break
+        case CharClass.changeling:
         case CharClass.dragonborn:
         case CharClass.drow:
         case CharClass.duergar:
