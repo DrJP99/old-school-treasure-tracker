@@ -48,6 +48,8 @@ After the server is up and running, go to your browser and go to [localhost:3000
 
 Here are some features I would like to develop in future versions:
 
+- [x] **Character Classes**: Add character classes from _Old School Essentials: Advanced Fantasy_ and the _Carcass Crawler_ zines.
+- [ ] **Change Allowed Classes**: Add a setting so that only a specific set of "allowed classes" (as determined by the game's referee) are available to select in the character form.
 - [ ] **Archive characters**. Instead of deleting your characters whenever a player is unable to make it to the session, you can archive a character and quickly add them back to the game next session.
 - [ ] **Dungeon Tracker**. When exploring a dungeon, mark off previous turns, add effects with durations (such as lighting a torch, casting a sleep spell) or create your own, be notified whenever a random happening occurs, etc.  
 

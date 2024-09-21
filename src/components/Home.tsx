@@ -169,7 +169,7 @@ const Home = () => {
 
     return (
         <div className="home">
-            <h1>OLD-SCHOOL TREASURE TRACKER</h1>
+            <h1>Old-School Treasure Tracker</h1>
 
             <h2>Add Characters, Treasure or Monsters</h2>
 
