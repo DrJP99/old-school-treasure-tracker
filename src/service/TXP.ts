@@ -892,6 +892,31 @@ export let getTpxByClassLevel = (
                 result = 120_000
                 break
         }
+    } else if (charClass === CharClass.halfling_hearthsinger) {
+        switch (level) {
+            case 1:
+                result = 2_000
+                break
+            case 2:
+                result = 2_000
+                break
+            case 3:
+                result = 4_000
+                break
+            case 4:
+                result = 8_000
+                break
+            case 5:
+                result = 16_000
+                break
+            case 6:
+                result = 32_000
+                break
+            case 7:
+                result = 56_000
+                break
+        }
     }
+
     return result
 }

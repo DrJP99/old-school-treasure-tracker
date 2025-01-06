@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:ital,wght@0,700&display=block');
 @import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@200..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@100..900&display=swap');
 
 $bg: #faf9f6;
 $light-black: #605f5e;
@@ -281,7 +281,7 @@ body {
 
 h1 {
     font-family:
-        'UnifrakturCook',
+        'Grenze Gotisch',
         system-ui,
         -apple-system,
         BlinkMacSystemFont,
@@ -293,8 +293,9 @@ h1 {
         'Open Sans',
         'Helvetica Neue',
         sans-serif;
-    // color: $red;
-    font-weight: normal;
+    font-variant-ligatures: none;
+    font-feature-settings: 'liga' 0;
+    font-weight: 900;
     text-align: center;
     line-height: 0.9em;
 }

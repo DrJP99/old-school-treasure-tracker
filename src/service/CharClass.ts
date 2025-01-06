@@ -24,7 +24,6 @@ export enum CharClass {
     ranger = 'Ranger',
     svirfneblin = 'Svirfneblin',
     //Carcass Crawler #0,
-    arcane_bard = 'Arcane Bard',
     changeling = 'Changeling',
     chaos_knight = 'Chaos Knight',
     warden = 'Warden',
@@ -44,4 +43,8 @@ export enum CharClass {
     mutoid = 'Mutoid',
     mycelian = 'Mycelian',
     tiefling = 'Tiefling',
+    // Carcass Crawler 4
+    halfling_hearthsinger = 'Halfling Hearthsinger',
+    halfling_reeve = 'Halfling Reeve',
+    arcane_bard = 'Arcane Bard',
 }
