@@ -23,21 +23,6 @@ const Options = () => {
         setOption(option)
     }
 
-    // useEffect(() => {
-    //     if (option) {
-    //         setClasses(
-    //             getEnumKeys(CharClass).map((key) => {
-    //                 return {
-    //                     key: key,
-    //                     value: option.availableClasses.includes(
-    //                         key as CharClass
-    //                     ),
-    //                 }
-    //             })
-    //         )
-    //     }
-    // }, [option])
-
     type SelectedClass = {
         key: string
         value: boolean
