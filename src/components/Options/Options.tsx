@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { getEnumKeys } from '../../service/EnumKeys'
 import { CharClass } from '../../service/CharClass'
 import Option, { loadOption, saveOption } from '../../service/Option'
 
 const Options = () => {
-    const navigate = useNavigate()
-
     const [option, setOption] = useState<Option>(loadOption())
 
     useEffect(() => {
