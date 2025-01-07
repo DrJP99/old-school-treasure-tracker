@@ -6,6 +6,7 @@ import { getEnumKeys } from '../service/EnumKeys'
 import { capitalize } from '../service/Capitalize'
 import { Character, NPC } from '../service/Character'
 import { CharacterLevelLimit } from '../service/CharacterLevelLimit'
+import Option, { loadOption } from '../service/Option'
 
 interface CharacterFormProps {
     returnCharacter: (char: Character) => void
@@ -37,6 +38,8 @@ const CharacterForm = ({
     const [isWageError, setIsWageError] = useState<boolean>(false)
     const [maxLevel, setMaxLevel] = useState<number>(14)
 
+    const [option, setOption] = useState<Option | undefined>()
+
     const shareRegex: RegExp = /^[1234]\/[1234]$/
 
     useEffect(() => {
@@ -55,6 +58,10 @@ const CharacterForm = ({
             }
         }
     }, [character])
+
+    useEffect(() => {
+        setOption(loadOption())
+    }, [])
 
     let resetFields = () => {
         setName('')
@@ -235,8 +242,8 @@ const CharacterForm = ({
                     id="character-class"
                     onChange={(e) => setCharClass(e.target.value as CharClass)}
                 >
-                    {getEnumKeys(CharClass).map((key, index) => (
-                        <option key={index} value={CharClass[key]}>
+                    {option?.availableClasses.map((key, index) => (
+                        <option key={index} value={key as CharClass}>
                             {capitalize(key)}
                         </option>
                     ))}

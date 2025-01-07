@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:ital,wght@0,700&display=block');
 @import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@200..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 $bg: #faf9f6;
 $light-black: #605f5e;
@@ -201,6 +202,7 @@ body {
     font-weight: bold;
     cursor: pointer;
     color: $fg;
+    font-family: 'Noto Sans', sans-serif;
 
     &-accept {
         background-color: $green;
@@ -220,6 +222,18 @@ body {
         &:hover {
             text-decoration: underline;
         }
+    }
+}
+
+a {
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: bold;
+    color: $aqua;
+    text-decoration: none;
+    font-size: medium;
+
+    &:hover {
+        text-decoration: underline;
     }
 }
 
@@ -388,4 +402,8 @@ ul {
     ::before {
         content: ' *';
     }
+}
+
+.option-list {
+    margin: 16px 0;
 }
