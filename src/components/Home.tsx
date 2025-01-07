@@ -14,6 +14,7 @@ import { Feat } from '../service/Feat'
 import FeatForm from './FeatForm'
 import { ToClipboard } from '../service/ToClipboard'
 import Modal from './Modal'
+import Option, { loadOption } from '../service/Option'
 
 const Home = () => {
     const [party, setParty] = useState<Party>(new Party())
@@ -32,6 +33,8 @@ const Home = () => {
 
     const [loaded, setLoaded] = useState<boolean>(false)
 
+    const [option, setOption] = useState<Option | undefined>()
+
     enum Element {
         character = 'character',
         treasure = 'treasure',
@@ -43,6 +46,7 @@ const Home = () => {
 
     useEffect(() => {
         loadParty()
+        setOption(loadOption())
     }, [])
 
     useEffect(() => {
@@ -60,6 +64,8 @@ const Home = () => {
             document.body.style.overflow = 'scroll'
         }
     }, [showModal])
+
+    useEffect(() => {}, [option])
 
     let cloneParty = (): Party => {
         return new Party(
@@ -169,8 +175,6 @@ const Home = () => {
 
     return (
         <div className="home">
-            <h1>Old-School Treasure Tracker</h1>
-
             <h2>Add Characters, Treasure or Monsters</h2>
 
             <div id="create-buttons">
